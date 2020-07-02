@@ -9,5 +9,6 @@ import Foundation
 
 struct LocalizableKey{
     var key     :String
+    var path    :String
     var inUse   :Bool = false
 }

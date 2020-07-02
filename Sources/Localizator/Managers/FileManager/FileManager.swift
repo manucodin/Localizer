@@ -12,6 +12,8 @@ class FileManager{
         
     private let seeker = Seeker()
     
+    private let config = FileManagerConfig()
+    
     public func readFile(filePath :String) throws -> Data{
         let fileURL = URL(fileURLWithPath: filePath)
         let data = try Data(contentsOf: fileURL)
@@ -21,7 +23,7 @@ class FileManager{
     public func localizableKeys(inPath path :String) throws -> [LocalizableKey]{
         let file = try File(path: path)
         let fileContent = try file.readAsString(encodedAs: .unicode)
-        return seeker.searchKeysInLocalizable(fileContent: fileContent)
+        return seeker.searchKeysInLocalizable(fileContent: fileContent, path: path)
     }
     
     public func searchLocalizableKeys(inDirectoryPath path :String) throws -> [LocalizableKey]{
@@ -35,16 +37,15 @@ class FileManager{
                     return false
                 }
                 
-                //TODO: - Convertir a configuración
-                if(fileExtension == "swift" || fileExtension == "m"){
+                if(config.extensions.map{$0.rawValue}.contains(fileExtension)){
                     return true
                 }
     
                 return false
             }
             
-            try files.forEach{
-                let keys = try seeker.searchLocalizableKeys(inFile: $0.read()).map({LocalizableKey(key: $0)})
+            try files.forEach{file in
+                let keys = try seeker.searchLocalizableKeys(inFile: file.read()).map({LocalizableKey(key: $0, path: file.path)})
                 proyectKeys.append(contentsOf: keys)
             }
         }

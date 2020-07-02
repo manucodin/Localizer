@@ -7,6 +7,7 @@
 
 import ArgumentParser
 import Foundation
+import Rainbow
 
 struct Search :ParsableCommand{
     
@@ -21,6 +22,8 @@ struct Search :ParsableCommand{
     @Flag(name: .short, help: "Compare your localizable keys against your coding keys, for default its false, if you want compare your coding keys against your localizable, send -u")
     private var unused :Bool = false
     
+    @Flag(name: .long, help: "Show localized path")
+    private var showPath :Bool = false
     
     func run() throws {
         let fileManager = FileManager()
@@ -39,8 +42,13 @@ struct Search :ParsableCommand{
 
         let unusedResults = results.filter{$0.inUse == false}
         unusedResults.forEach{
-            print("KEY -> \($0.key)")
+            print("KEY -> \($0.key)\(showPath == true ? " PATH: \($0.path)" : "")")
         }
-        print("NUM KEYS: \(unusedResults.count)")
+        
+        if(unusedResults.isEmpty){
+            print("SUCCESS".green)
+        }else{
+            print("UNUSED KEYS: \(unusedResults.count)".red)
+        }
     }
 }

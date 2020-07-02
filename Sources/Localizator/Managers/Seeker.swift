@@ -33,7 +33,7 @@ class Seeker{
         return [String]()
     }
     
-    func searchKeysInLocalizable(fileContent :String) -> [LocalizableKey]{
+    func searchKeysInLocalizable(fileContent :String, path :String) -> [LocalizableKey]{
         let lines = fileContent.components(separatedBy: .newlines).filter{
             guard let lastChracter = $0.last else{
                 return false
@@ -46,7 +46,7 @@ class Seeker{
         
         let keyValues = lines.map({String($0.split(separator: "=").first ?? "")}).map({String($0.replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines))})
         
-        let keys = keyValues.map({LocalizableKey(key: $0)})
+        let keys = keyValues.map({LocalizableKey(key: $0, path: path)})
         return keys
     }
     
@@ -54,7 +54,7 @@ class Seeker{
                 
         var results = [LocalizableKey]()
         mainKeys.forEach{mainKey in
-            let newKey = LocalizableKey(key: mainKey.key, inUse: secondaryKeys.contains(where: {$0.key == mainKey.key}))
+            let newKey = LocalizableKey(key: mainKey.key, path: mainKey.path, inUse: secondaryKeys.contains(where: {$0.key == mainKey.key}))
             results.append(newKey)
         }
                 

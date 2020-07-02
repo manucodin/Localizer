@@ -8,7 +8,8 @@
 import ArgumentParser
 
 struct Localize :ParsableCommand{
-    public static var configuration = CommandConfiguration(abstract: "Localize proyect strings")
+    
+    public static var configuration = CommandConfiguration(abstract: "Download or update your Localizable.strings file")
     
     func run() throws {
         print("Traducir proyecto")
