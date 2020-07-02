@@ -16,6 +16,8 @@ Run the next command in your terminar:
 localizator search -l <YourLocalizableFilePath> -p <YourProyectPath>
 ````
 
-**-l or --localizable-path**: The directory where your translation files are located
-**-p or --proyect-path**: For default its the current directory 
+**-l** or **--localizable-path**: The directory where your translation files are located
+
+**-p** or **--proyect-path**: For default its the current directory 
+
 **-u**: For default, compare your localizable keys against your coding keys, if you want compare your coding keys against your localizable, send -u
