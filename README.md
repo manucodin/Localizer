@@ -21,3 +21,5 @@ localizator search -l <YourLocalizableFilePath> -p <YourProyectPath>
 **-p** or **--proyect-path**: For default its the current directory 
 
 **-u**: For default, compare your localizable keys against your coding keys, if you want compare your coding keys against your localizable, send -u
+
+**--show-path**: If you want localizable key path in your proyect
