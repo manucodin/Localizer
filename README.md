@@ -1,4 +1,4 @@
-# Welcome to LocalizaThor!
+# Welcome to Localizator!
 
 LocalizaThor is a simple tool to search for strings not located in your project or that you are not using in your string file.
 
