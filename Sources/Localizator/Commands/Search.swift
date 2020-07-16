@@ -19,8 +19,8 @@ struct Search :ParsableCommand{
     @Option(name: .shortAndLong, help: "Proyect path")
     private var proyectPath :String = "."
     
-    @Flag(name: .short, help: "Compare your localizable keys against your coding keys, for default its false, if you want compare your coding keys against your localizable, send -u")
-    private var unused :Bool = false
+    @Flag(name: .short, help: "Compare your localizable keys against your coding keys, if you want compare your coding keys against your localizable, send -c")
+    private var compareLocalizable :Bool = true
     
     @Flag(name: .long, help: "Show localized path")
     private var showPath :Bool = false
@@ -34,7 +34,7 @@ struct Search :ParsableCommand{
                
         var results = [LocalizableKey]()
 
-        if(unused == false){
+        if(compareLocalizable == false){
             results = fileManager.compareKeys(mainKeys: localizableKeys, secondaryKeys: proyectKeys)
         }else{
             results = fileManager.compareKeys(mainKeys: proyectKeys, secondaryKeys: localizableKeys)
