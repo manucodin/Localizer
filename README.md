@@ -1,4 +1,4 @@
-# Welcome to LocalizaThor!
+# Welcome to Localizator!
 
 LocalizaThor is a simple tool to search for strings not located in your project or that you are not using in your string file.
 
@@ -21,3 +21,5 @@ localizator search -l <YourLocalizableFilePath> -p <YourProyectPath>
 **-p** or **--proyect-path**: For default its the current directory 
 
 **-c**: For default, compare your localizable keys against your coding keys, if you want compare your coding keys against your localizable, send -c
+
+**--show-path**: If you want localizable key path in your proyect
