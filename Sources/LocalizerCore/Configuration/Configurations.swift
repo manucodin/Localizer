@@ -11,6 +11,10 @@ struct Configurations {
     static let `default`: Configuration = ConfigurationImp(
         localizableEncoding: .utf8,
         fileEncoding: .utf8,
-        filesSupported: [.swift, .objC]
+        filesSupported: [.swift, .objC],
+        fileRegexExpressions: [
+            #"(?!NSLocalizedString\()("\w+")"#,
+            #"(('(((\\)+(')?)|([^']))*')|("(((\\)+(")?)|([^"]))*")(?=.localized))"#
+        ]
     )
 }

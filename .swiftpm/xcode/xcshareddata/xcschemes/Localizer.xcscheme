@@ -48,6 +48,20 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Localizer_LocalizerTests"
+               BuildableName = "Localizer_LocalizerTests"
+               BlueprintName = "Localizer_LocalizerTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -91,7 +105,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-p &quot;~/Desktop/proyectos/idealista-ios/&quot;"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-l &quot;~/Desktop/proyectos/idealista-ios/idealista/Localizables/en.lproj/Localizable.strings&quot;"

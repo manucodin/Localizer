@@ -1,7 +1,7 @@
 import XCTest
 import class Foundation.Bundle
 
-final class LocalizatorTests: XCTestCase {
+final class LocalizerTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
@@ -12,7 +12,7 @@ final class LocalizatorTests: XCTestCase {
             return
         }
 
-        let fooBinary = productsDirectory.appendingPathComponent("Localizator")
+        let fooBinary = productsDirectory.appendingPathComponent("Localizer")
 
         let process = Process()
         process.executableURL = fooBinary

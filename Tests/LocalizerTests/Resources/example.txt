@@ -1,0 +1,4 @@
+Hello world!
+    
+let test1 = NSLocalizedString("test1", comment: "")
+let test2 = "test2".localized()

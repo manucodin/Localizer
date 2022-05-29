@@ -44,6 +44,6 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
     }
     
     private func getKeyValue(fromLocalizable localizable: String) -> String? {
-        return localizable.split(separator: "=").first?.trimmingCharacters(in: ["("," ",":","\"",")"])
+        return localizable.split(separator: "=").first?.clean()
     }
 }
