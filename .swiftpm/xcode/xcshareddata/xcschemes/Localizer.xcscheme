@@ -105,11 +105,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-p &quot;~/Desktop/proyectos/idealista-ios/&quot;"
+            argument = "-p &quot;~/Desktop/Proyectos/iOS/idealista-ios/&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-l &quot;~/Desktop/proyectos/idealista-ios/idealista/Localizables/en.lproj/Localizable.strings&quot;"
+            argument = "-l &quot;~/Desktop/Proyectos/iOS/idealista-ios/idealista/Localizables/en.lproj/Localizable.strings&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

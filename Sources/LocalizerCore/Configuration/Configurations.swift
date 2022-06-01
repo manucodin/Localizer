@@ -13,7 +13,7 @@ struct Configurations {
         fileEncoding: .utf8,
         filesSupported: [.swift, .objC],
         fileRegexExpressions: [
-            #"[(?!\(NSLocalizedString\()]("\w+")|(\"\w+\d\")[(?!\.+localized\(\))]"#
+            #"(?!NSLocalizedString\(@\")(?:\w+)(?=\")|(?!\")(\w+)(?=\"\.localized\(\))"#
         ]
     )
 }

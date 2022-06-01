@@ -26,8 +26,12 @@ class RegexMatcherImp: RegexMatcher {
     private func searchLocalizables(inFileContent fileContent: String, regexPattern: String) -> Set<LocalizableString> {
         guard let regex = try? NSRegularExpression(pattern: regexPattern, options: .caseInsensitive) else { return Set<LocalizableString>() }
         
+        debugPrint("PASA 1")
+        
         let range = NSRange(fileContent.startIndex..<fileContent.endIndex, in: fileContent)
         let regexMatches = regex.matches(in: fileContent, options: [], range: range)
+        
+        debugPrint("PASA 2")
         
         let localizablesString = regexMatches.compactMap{ regexResult -> LocalizableString? in
             if let range = Range(regexResult.range, in: fileContent) {
@@ -37,6 +41,8 @@ class RegexMatcherImp: RegexMatcher {
 
             return nil
         }
+        
+        debugPrint("PASA 3 -> \(localizablesString.map{ $0.key} )")
 
         return Set<LocalizableString>(localizablesString)
     }
