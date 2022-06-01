@@ -29,7 +29,7 @@ class ProjectDataSourceImp: ProjectDataSource {
         
         files.forEach{ file in
             let fileLocalizables = regexMatcher.fetchLocalizableKeys(fromFile: file.path)
-            fileLocalizables.forEach{ localizableKeys.insert($0) }
+            localizableKeys.formUnion(fileLocalizables)
         }
         
         return localizableKeys

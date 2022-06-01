@@ -8,5 +8,5 @@
 import Foundation
 
 protocol RegexMatcher {
-    func fetchLocalizableKeys(fromFile file: String) -> Set<LocalizableString>
+    func fetchLocalizableKeys(fromFile filePath: String) -> Set<LocalizableString>
 }

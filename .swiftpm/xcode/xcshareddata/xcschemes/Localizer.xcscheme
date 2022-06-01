@@ -68,7 +68,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -105,7 +106,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-p &quot;~/Desktop/proyectos/idealista-ios/&quot;"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-l &quot;~/Desktop/proyectos/idealista-ios/idealista/Localizables/en.lproj/Localizable.strings&quot;"

@@ -7,7 +7,7 @@
 
 import Foundation
 
-private class LocalizableMatcherImp: LocalizableMatcher {
+public class LocalizableMatcherImp: LocalizableMatcher {
     private let localizablesDataSource: LocalizablesDataSource
     private let projectDataSource: ProjectDataSource
     
@@ -18,6 +18,7 @@ private class LocalizableMatcherImp: LocalizableMatcher {
     
     func matchLocalizables(parameters: Parameters) {
         let localizables = localizablesDataSource.fetchLocalizableKeys(fromFile: parameters.localizableFilePath)
-        let projectLocalizables = projectDataSource.fetchLocalizables(fromPath: parameters.proyectPath)
+        let projectLocalizables = projectDataSource.fetchLocalizables(fromPath: parameters.proyectPath)        
+        debugPrint(projectLocalizables)
     }
 }

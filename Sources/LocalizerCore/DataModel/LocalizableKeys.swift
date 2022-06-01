@@ -9,5 +9,4 @@ import Foundation
 
 struct LocalizableString: Hashable{
     var key: String
-    var inUse: Bool = false
 }

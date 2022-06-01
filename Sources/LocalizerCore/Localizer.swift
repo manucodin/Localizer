@@ -28,14 +28,8 @@ public struct Localizer: ParsableCommand {
             reverseLocalizable: reverseLocalizable
         )
         
-        let localizablesDataSource = LocalizablesDataSourceImp(configuration: Configurations.default)
-        let localizables = localizablesDataSource.fetchLocalizableKeys(fromFile: parameters.localizableFilePath)
-        debugPrint(localizables)
-        
-        
-        let projectDataSource = ProjectDataSourceImp(configuration: Configurations.default)
-        let projectKeys = projectDataSource.fetchLocalizables(fromPath: parameters.proyectPath)
-        debugPrint(projectKeys)
+        let localizableMatcher = LocalizableMatcherImp(withConfiguration: Configurations.default)
+        localizableMatcher.matchLocalizables(parameters: parameters)
     }
     
     public init() {}

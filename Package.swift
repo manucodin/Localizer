@@ -15,7 +15,8 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.2.0"),
         .package(url: "https://github.com/JohnSundell/Files", from: "4.0.0"),
         .package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
-        .package(url: "https://github.com/Quick/Nimble.git", from: "10.0.0")
+        .package(url: "https://github.com/Quick/Nimble.git", from: "10.0.0"),
+        .package(url: "https://github.com/sharplet/Regex.git", from: "2.1.0")
     ],
     targets: [
         .target(
@@ -25,7 +26,8 @@ let package = Package(
         .target(name: "LocalizerCore", dependencies: [
             .product(name: "ArgumentParser", package: "swift-argument-parser"),
             .product(name: "Files", package: "Files"),
-            .product(name: "Rainbow", package: "Rainbow")
+            .product(name: "Rainbow", package: "Rainbow"),
+            .product(name: "Regex", package: "Regex")
         ]),
         .testTarget(
             name: "LocalizerTests",

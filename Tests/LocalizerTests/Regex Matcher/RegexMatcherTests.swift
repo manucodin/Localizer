@@ -41,6 +41,8 @@ class RegexMatcherTests: XCTestCase {
         var expectedLocalizables = Set<LocalizableString>()
         expectedLocalizables.insert(LocalizableString(key: "test1"))
         expectedLocalizables.insert(LocalizableString(key: "test2"))
+        expectedLocalizables.insert(LocalizableString(key: "test4"))
+        expectedLocalizables.insert(LocalizableString(key: "test4"))
         
         let localizables = sut.fetchLocalizableKeys(fromFile: filePath)
         

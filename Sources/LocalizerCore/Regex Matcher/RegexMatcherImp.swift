@@ -16,38 +16,28 @@ class RegexMatcherImp: RegexMatcher {
         self.configuration = configuration
     }
     
-    func fetchLocalizableKeys(fromFile file: String) -> Set<LocalizableString> {
-        guard let fileContent = loadFile(filePath: file) else { return Set<LocalizableString>() }
+    func fetchLocalizableKeys(fromFile filePath: String) -> Set<LocalizableString> {
+        guard let fileContent = fileDataSource.fetchFileContent(fromPath: filePath, encoding: configuration.fileEncoding) else { return Set<LocalizableString>() }
+        guard let regexPattern = configuration.fileRegexPatterns.first else { return Set<LocalizableString>() }
         
-        var fileLocalizables = Set<LocalizableString>()
-        configuration.fileRegexPatterns.forEach{ regexPattern in
-            let localizables = searchLocalizables(inFileContent: fileContent, regexPattern: regexPattern)
-            fileLocalizables.formUnion(localizables)
-        }
-        
-        return fileLocalizables
+        return searchLocalizables(inFileContent: fileContent, regexPattern: regexPattern)
     }
-    
-    private func loadFile(filePath: String) -> String? {
-        guard let fileContent = fileDataSource.fetchFileContent(fromPath: filePath, encoding: configuration.fileEncoding) else { return nil }
-        
-        return fileContent
-    }
-    
+
     private func searchLocalizables(inFileContent fileContent: String, regexPattern: String) -> Set<LocalizableString> {
-        guard let regex = try? NSRegularExpression(pattern: regexPattern) else { return Set<LocalizableString>() }
+        guard let regex = try? NSRegularExpression(pattern: regexPattern, options: .caseInsensitive) else { return Set<LocalizableString>() }
         
-        let fileRange = NSRange(fileContent.startIndex..<fileContent.endIndex, in: fileContent)
-        let regexMatches = regex.matches(in: fileContent, range: fileRange)
+        let range = NSRange(fileContent.startIndex..<fileContent.endIndex, in: fileContent)
+        let regexMatches = regex.matches(in: fileContent, options: [], range: range)
+        
         let localizablesString = regexMatches.compactMap{ regexResult -> LocalizableString? in
             if let range = Range(regexResult.range, in: fileContent) {
                 let key = String(fileContent[range].clean())
                 return LocalizableString(key: key)
             }
-            
+
             return nil
         }
-        
-        return Set<LocalizableString>(localizablesString)        
+
+        return Set<LocalizableString>(localizablesString)
     }
 }
