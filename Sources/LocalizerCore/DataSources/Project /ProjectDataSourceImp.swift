@@ -1,12 +1,6 @@
-//
-//  ProjectDataSourceImp.swift
-//  
-//
-//  Created by Manuel Rodriguez on 27/5/22.
-//
-
 import Foundation
 import Files
+import Progress
 
 class ProjectDataSourceImp: ProjectDataSource {
     private let configuration: Configuration
@@ -17,17 +11,18 @@ class ProjectDataSourceImp: ProjectDataSource {
         self.regexMatcher = RegexMatcherImp(configuration: configuration)
     }
     
-    func fetchLocalizables(fromPath path: String) -> Set<LocalizableString> {
+    func fetchLocalizables(fromPath path: String) -> Set<String> {
         let localizableKeys = fetchLocalizableKeys(fromPath: path)
         return localizableKeys
     }
     
-    private func fetchLocalizableKeys(fromPath path: String) -> Set<LocalizableString> {
-        var localizableKeys = Set<LocalizableString>()
+    private func fetchLocalizableKeys(fromPath path: String) -> Set<String> {
+        print("Searching localizable keys from \(path)")
         
         let files = fetchFiles(fromPath: path)
+        var localizableKeys = Set<String>()
         
-        files.forEach{ file in
+        for file in Progress(files) {
             let fileLocalizables = regexMatcher.fetchLocalizableKeys(fromFile: file.path)
             localizableKeys.formUnion(fileLocalizables)
         }

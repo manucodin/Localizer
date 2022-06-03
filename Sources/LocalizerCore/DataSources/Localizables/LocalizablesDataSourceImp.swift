@@ -1,10 +1,3 @@
-//
-//  LocalizablesDataSourceImp.swift
-//  
-//
-//  Created by Manuel Rodriguez on 24/5/22.
-//
-
 import Foundation
 
 class LocalizablesDataSourceImp: LocalizablesDataSource {    
@@ -16,8 +9,10 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         self.fileDataSource = fileDataSource
     }
     
-    func fetchLocalizableKeys(fromFile filePath :String) -> Set<LocalizableString> {
+    func fetchLocalizableKeys(fromFile filePath :String) -> Set<String> {
         guard let fileContent = fetchFileContent(fromFile: filePath) else { return [] }
+        
+        print("Fetching localizables from: \(filePath)")
         
         return searchLocalizableKeys(fileContent: fileContent)
     }
@@ -28,12 +23,14 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         return fileContent
     }
     
-    private func searchLocalizableKeys(fileContent: String) -> Set<LocalizableString> {
+    private func searchLocalizableKeys(fileContent: String) -> Set<String> {
         let localizables = fileContent.components(separatedBy: .newlines).filter{ isNewTextLine(text: $0) }
         let keyValue = localizables.compactMap{ getKeyValue(fromLocalizable:$0) }
-        let keys = keyValue.map{ LocalizableString(key: $0) }
+        let setValues = Set<String>(keyValue)
         
-        return Set<LocalizableString>(keys)
+        print("Fetched \(setValues.count) localizables")
+        
+        return setValues
     }
     
     private func isNewTextLine(text: String) -> Bool {

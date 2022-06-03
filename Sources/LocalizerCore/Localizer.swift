@@ -18,14 +18,18 @@ public struct Localizer: ParsableCommand {
     @Option(name: .shortAndLong, help: "Proyect path")
     private var proyectPath: String = "."
     
-    @Flag(name: .long, help: "Compare your coding keys against your localizable")
+    @Flag(name: .shortAndLong, help: "Compare your coding keys against your localizable")
     private var reverseLocalizable: Bool = false
+    
+    @Flag(name: .shortAndLong, help: "Show unused localizable keys")
+    private var showUnusedKeys: Bool = false
     
     public func run() throws {
         let parameters = Parameters(
             localizableFilePath: localizableFilePath,
             proyectPath: proyectPath,
-            reverseLocalizable: reverseLocalizable
+            reverseLocalizable: reverseLocalizable,
+            showUnusedKeys: showUnusedKeys
         )
         
         let localizableMatcher = LocalizableMatcherImp(withConfiguration: Configurations.default)

@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Manuel Rodriguez on 29/5/22.
-//
-
 import Foundation
 
 class RegexMatcherImp: RegexMatcher {
@@ -16,34 +9,27 @@ class RegexMatcherImp: RegexMatcher {
         self.configuration = configuration
     }
     
-    func fetchLocalizableKeys(fromFile filePath: String) -> Set<LocalizableString> {
-        guard let fileContent = fileDataSource.fetchFileContent(fromPath: filePath, encoding: configuration.fileEncoding) else { return Set<LocalizableString>() }
-        guard let regexPattern = configuration.fileRegexPatterns.first else { return Set<LocalizableString>() }
+    func fetchLocalizableKeys(fromFile filePath: String) -> Set<String> {
+        guard let fileContent = fileDataSource.fetchFileContent(fromPath: filePath, encoding: configuration.fileEncoding) else { return Set<String>() }
+        guard let regexPattern = configuration.fileRegexPatterns.first else { return Set<String>() }
         
         return searchLocalizables(inFileContent: fileContent, regexPattern: regexPattern)
     }
 
-    private func searchLocalizables(inFileContent fileContent: String, regexPattern: String) -> Set<LocalizableString> {
-        guard let regex = try? NSRegularExpression(pattern: regexPattern, options: .caseInsensitive) else { return Set<LocalizableString>() }
-        
-        debugPrint("PASA 1")
-        
+    private func searchLocalizables(inFileContent fileContent: String, regexPattern: String) -> Set<String> {
+        guard let regex = try? NSRegularExpression(pattern: regexPattern, options: .caseInsensitive) else { return Set<String>() }
+                
         let range = NSRange(fileContent.startIndex..<fileContent.endIndex, in: fileContent)
         let regexMatches = regex.matches(in: fileContent, options: [], range: range)
-        
-        debugPrint("PASA 2")
-        
-        let localizablesString = regexMatches.compactMap{ regexResult -> LocalizableString? in
+                
+        let localizablesString = regexMatches.compactMap{ regexResult -> String? in
             if let range = Range(regexResult.range, in: fileContent) {
-                let key = String(fileContent[range].clean())
-                return LocalizableString(key: key)
+                return String(fileContent[range].clean())
             }
 
             return nil
         }
         
-        debugPrint("PASA 3 -> \(localizablesString.map{ $0.key} )")
-
-        return Set<LocalizableString>(localizablesString)
+        return Set<String>(localizablesString)
     }
 }

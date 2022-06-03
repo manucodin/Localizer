@@ -112,6 +112,10 @@
             argument = "-l &quot;~/Desktop/Proyectos/iOS/idealista-ios/idealista/Localizables/en.lproj/Localizable.strings&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-s"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction

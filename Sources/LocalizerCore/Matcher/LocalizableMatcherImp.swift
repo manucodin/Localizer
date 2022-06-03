@@ -1,11 +1,6 @@
-//
-//  LocalizableMatcherImp.swift
-//  
-//
-//  Created by Manuel Rodriguez on 29/5/22.
-//
-
 import Foundation
+import Progress
+import Rainbow
 
 public class LocalizableMatcherImp: LocalizableMatcher {
     private let localizablesDataSource: LocalizablesDataSource
@@ -19,6 +14,31 @@ public class LocalizableMatcherImp: LocalizableMatcher {
     func matchLocalizables(parameters: Parameters) {
         let localizables = localizablesDataSource.fetchLocalizableKeys(fromFile: parameters.localizableFilePath)
         let projectLocalizables = projectDataSource.fetchLocalizables(fromPath: parameters.proyectPath)        
-        debugPrint(projectLocalizables)
+        let unusedKeys = searchUnusedKeys(
+            mandatoryLocalizables: parameters.reverseLocalizable ? projectLocalizables : localizables,
+            secondaryLocalizables: parameters.reverseLocalizable ? localizables : projectLocalizables
+        )
+        
+        if parameters.showUnusedKeys {
+            unusedKeys.forEach{ print($0) }
+        }
+        
+        if unusedKeys.isEmpty {
+            print("Successfull! Has 0 unused localizables strings".green)
+        } else {
+            print("Fetched \(unusedKeys.count) unused localizables strings".red)
+        }
+    }
+    
+    private func searchUnusedKeys(mandatoryLocalizables: Set<String>, secondaryLocalizables: Set<String>) -> Set<String>{
+        var unusedLocalizables = Set<String>()
+        
+        mandatoryLocalizables.forEach{ mandatoryLocalizable in
+            if !secondaryLocalizables.contains(mandatoryLocalizable) {
+                unusedLocalizables.insert(mandatoryLocalizable)
+            }
+        }
+        
+        return unusedLocalizables
     }
 }

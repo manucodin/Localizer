@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Manuel Rodriguez on 27/5/22.
-//
-
 import Foundation
 import Files
 
