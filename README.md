@@ -1,25 +1,22 @@
-# Welcome to Localizator!
+# Welcome to Localizer!
 
-LocalizaThor is a simple tool to search for strings not located in your project or that you are not using in your string file.
+Localizer is a simple tool for search your strings not localized in your project.
 
-# Launch LocalizaThor
+## How to use
 
 To launch the tool, only write in your terminal (-h if you want see a list with subcommands):
 ````
-localizator -h
+localizer -p <Your proyect path> -l <Your localizables path>
 ````
 
-# Search localizable files
+# Options
 
-Run the next command in your terminar:
-````
-localizator search -l <YourLocalizableFilePath> -p <YourProyectPath>
-````
+**-p** or **--proyect-path**: Your project directory
 
-**-l** or **--localizable-path**: The directory where your translation files are located
+**-l** or **--localizable-file-path**: Your localizable directory
 
-**-p** or **--proyect-path**: For default its the current directory 
+**-r** or **--reverse-localizable**: Be default is ```false```, you match your localizables with your project localizables. Set this parameter to ```true``` if you want match your project localizables with your localizable strings.
 
-**-c**: For default, compare your localizable keys against your coding keys, if you want compare your coding keys against your localizable, send -c
+**-s** or **--show-unused-keys**: Is ```false``` be default. You can use this parameters if you want see your unused localizables.
 
-**--show-path**: If you want localizable key path in your proyect
+
