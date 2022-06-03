@@ -13,10 +13,10 @@ public struct Localizer: ParsableCommand {
     public static var configuration = CommandConfiguration(abstract: "Search and list all string in localizable.string")
     
     @Option(name: .shortAndLong, help: "Localize strings file path")
-    private var localizableFilePath: String = "./en.lproj/Localizable.strings"
+    private var localizableFilePath: String
     
     @Option(name: .shortAndLong, help: "Proyect path")
-    private var proyectPath: String = "."
+    private var proyectPath: String
     
     @Flag(name: .shortAndLong, help: "Compare your coding keys against your localizable")
     private var reverseLocalizable: Bool = false
