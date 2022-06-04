@@ -35,6 +35,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Build and Test
         run:
-          xcodebuild test -scheme Localizer -sdk macosx -destination "platform=macOS" clean build test -enableCodeCoverage
+          xcodebuild test -scheme Localizer -sdk macosx -destination "platform=macOS" clean build test -enableCodeCoverage YES
       - name: Codecov
         uses: codecov/codecov-action@v2
