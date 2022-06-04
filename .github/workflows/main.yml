@@ -38,7 +38,3 @@ jobs:
           xcodebuild -scheme Localizer -sdk macosx clean build test -destination "platform=macOS"
       - name: Codecov
         uses: codecov/codecov-action@v2
-        with:
-          # the token is optional for a public repo, but including it anyway
-          token: b705013a-611b-44ed-ba4c-20540005b523
-          env_vars: MD_APPLE_SDK_ROOT,RUNNER_OS,RUNNER_ARCH
