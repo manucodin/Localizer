@@ -1,5 +1,5 @@
 # Localizer
-[![Testing](https://github.com/MRodSebastian/Localizer/actions/workflows/main.yml/badge.svg)](https://github.com/MRodSebastian/Localizer/actions/workflows/main.yml) [![Swift](https://img.shields.io/badge/swift-5.0-red)](https://cocoapods.org/pods/InstaGallery) [![Platform](https://img.shields.io/badge/platform-ios-blue)](https://cocoapods.org/pods/InstaGallery) 
+[![Testing](https://github.com/MRodSebastian/Localizer/actions/workflows/main.yml/badge.svg)](https://github.com/MRodSebastian/Localizer/actions/workflows/main.yml) [![codecov](https://codecov.io/gh/MRodSebastian/Localizer/branch/master/graph/badge.svg?token=HORRM5YZ4X)](https://codecov.io/gh/MRodSebastian/Localizer) [![Swift](https://img.shields.io/badge/swift-5.0-red)](https://cocoapods.org/pods/InstaGallery) [![Platform](https://img.shields.io/badge/platform-ios-blue)](https://cocoapods.org/pods/InstaGallery) 
 
 Localizer is a simple tool for search your strings not localized in your project.
 
