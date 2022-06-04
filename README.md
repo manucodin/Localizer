@@ -8,16 +8,20 @@ Localizer is a simple tool for search your strings not localized in your project
 ### From Source
 
 ````
-git clone https://github.com/MRodSebastian/Localizer.git
-cd Localizer
-make
+$ git clone https://github.com/MRodSebastian/Localizer.git
+$ cd Localizer
+$ make
+````
+### With Mint
+````
+$ mint install MRodSebastian/Localizer localizer
 ````
 
 ### Using Localizer
 
 To launch the tool, only write in your terminal (-h if you want see a list with subcommands):
 ````
-localizer -p <Your proyect path> -l <Your localizables path>
+$ localizer -p <Your proyect path> -l <Your localizables path>
 ````
 
 ## Options
