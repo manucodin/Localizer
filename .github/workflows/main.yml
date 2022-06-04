@@ -1,0 +1,38 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  pull_request:
+    branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        macos:
+          - 10.15
+          - 11
+        xcode:
+          - latest-stable
+        include:
+          - macos: 11
+            xcode: latest
+    runs-on: macos-${{ matrix.macos }}
+    steps:
+      - name: Select Xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ matrix.xcode }}
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build and Test
+        run:
+          xcodebuild -scheme Localizer -sdk macosx clean build test -destination "platform=macOS"
