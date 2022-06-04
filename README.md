@@ -3,13 +3,14 @@
 
 Localizer is a simple tool for search your strings not localized in your project.
 
-## How to use
+## Installation
 
-### Create realease and install like command line tool
-If you want use localizer like other command line tool, you need create a release version and copy in your local path. Run the next commands:
+### From Source
+
 ````
-swift build --configuration release
-cp -f .build/release/localizer /usr/local/bin/localizer
+git clone https://github.com/MRodSebastian/Localizer.git
+cd Localizer
+make
 ````
 
 ### Using Localizer
