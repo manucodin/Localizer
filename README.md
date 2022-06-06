@@ -12,7 +12,7 @@ $ git clone https://github.com/MRodSebastian/Localizer.git
 $ cd Localizer
 $ make
 ````
-### With Mint
+### With [Mint](https://github.com/yonaskolb/Mint)
 ````
 $ mint install MRodSebastian/Localizer localizer
 ````
