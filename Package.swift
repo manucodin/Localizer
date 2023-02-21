@@ -1,40 +1,28 @@
-// swift-tools-version:5.3
+// swift-tools-version: 5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "Localizer",
-    platforms: [
-        .macOS(.v10_15)
-    ],
-    products: [
-        .executable(name: "localizer", targets: ["Localizer"])
-    ],
+    platforms: [.macOS(.v10_15)],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "0.2.0")),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.2.0")),
         .package(url: "https://github.com/JohnSundell/Files", .upToNextMajor(from: "4.0.0")),
-        .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "3.0.0")),
-        .package(url: "https://github.com/Quick/Nimble.git", .upToNextMajor(from: "10.0.0")),
-        .package(url: "https://github.com/jkandzi/Progress.swift.git", .upToNextMajor(from: "0.4.0"))
+        .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.0"))
     ],
     targets: [
-        .target(
+        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+        // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        .executableTarget(
             name: "Localizer",
-            dependencies: ["LocalizerCore"]
-        ),
-        .target(name: "LocalizerCore", dependencies: [
-            .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            .product(name: "Files", package: "Files"),
-            .product(name: "Rainbow", package: "Rainbow"),
-            .product(name: "Progress", package: "Progress.swift")
-        ]),
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "Files", package: "Files"),
+                .product(name: "Rainbow", package: "Rainbow")
+            ]),
         .testTarget(
             name: "LocalizerTests",
-            dependencies: ["Localizer", "Nimble"],
-            resources: [
-                .process("Resources")
-            ]
-        ),
+            dependencies: ["Localizer"]),
     ]
 )
