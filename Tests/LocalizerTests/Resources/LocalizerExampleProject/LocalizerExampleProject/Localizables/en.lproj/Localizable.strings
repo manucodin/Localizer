@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  LocalizerExampleProject
+
+  Created by Manuel Rodriguez Sebastian on 21/2/23.
+  
+*/
+
+"hey_text" = "Hi";
+"bye_text" = "Bye";

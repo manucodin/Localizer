@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol ProjectDataSource {
+internal protocol ProjectDataSource {
     func fetchLocalizables() async throws -> Set<String>
 }

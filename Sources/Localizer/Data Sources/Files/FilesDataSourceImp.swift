@@ -8,7 +8,7 @@
 import Foundation
 import Files
 
-class FilesDataSourceImp: FilesDataSource {
+internal class FilesDataSourceImp: FilesDataSource {
     func fetchFolders(fromPath path: String) throws -> Set<String> {
         do {
             let folders = try Folder(path: path).subfolders.map{ $0.path }

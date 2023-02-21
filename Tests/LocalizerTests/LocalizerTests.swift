@@ -1,6 +1,4 @@
 import XCTest
-@testable import Localizer
+import class Foundation.Bundle
 
-final class LocalizerTests: XCTestCase {
-    
-}
+final class LocalizerTests: XCTestCase {}

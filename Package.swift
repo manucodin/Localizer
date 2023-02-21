@@ -23,6 +23,10 @@ let package = Package(
             ]),
         .testTarget(
             name: "LocalizerTests",
-            dependencies: ["Localizer"]),
+            dependencies: ["Localizer"],
+            resources: [
+                .copy("Resources/example.txt"),
+                .copy("Resources/LocalizerExampleProject")
+            ]),
     ]
 )

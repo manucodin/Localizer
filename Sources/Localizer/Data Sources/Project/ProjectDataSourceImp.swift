@@ -7,13 +7,13 @@
 
 import Foundation
 
-class ProjectDataSourceImp: ProjectDataSource {
+internal class ProjectDataSourceImp: ProjectDataSource {
     private let parameters: Parameters
     private let configuration: Configuration
     
     private let filesDataSource: FilesDataSource = FilesDataSourceImp()
     
-    public init(parameters: Parameters, configuration: Configuration) {
+    internal init(parameters: Parameters, configuration: Configuration) {
         self.parameters = parameters
         self.configuration = configuration
     }
@@ -43,7 +43,7 @@ class ProjectDataSourceImp: ProjectDataSource {
     private func fetchLocalizableKeys(fromPath path: String, extensions: Set<String>, enconding: String.Encoding, pattern: String) async throws -> Set<String> {
         return try await withThrowingTaskGroup(of: Set<String>.self) { taskGroup in
             let files = try filesDataSource.fetchRecursiveFiles(fromPath: path, extensions: extensions)
-
+            
             files.forEach { file in
                 taskGroup.addTask {
                     return try await self.searchLocalizables(atFilePath: file)
@@ -70,18 +70,19 @@ class ProjectDataSourceImp: ProjectDataSource {
             pattern: configuration.capturePattern,
             options: .caseInsensitive
         )
-                
-        let matches = captureRegex.matches(in: fileContent, options: [], range: fileRange)
+        
+        let matches = captureRegex.matches(in: fileContent, range: fileRange)
         
         var results = Set<String>()
-    
         matches.forEach { match in
-            if match.numberOfRanges >= 2 {
-                let matchRange = match.range(at: 1)
-
+            for rangeIndex in 1..<match.numberOfRanges {
+                let matchRange = match.range(at: rangeIndex)
+                
+                if matchRange == fileRange { continue }
+                
                 if let substringRange = Range(matchRange, in: fileContent) {
-                    let captureString = String(fileContent[substringRange].cleanned)
-                    results.insert(captureString)
+                    let capture = String(fileContent[substringRange])
+                    results.insert(capture)
                 }
             }
         }
