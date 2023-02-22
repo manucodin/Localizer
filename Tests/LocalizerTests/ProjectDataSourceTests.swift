@@ -14,16 +14,30 @@ final class ProjectDataSourceTests: XCTestCase {
     
     var sut: ProjectDataSourceImp!
     
-    let parameters = Parameters(
-        localizableFilePath: "~/Desktop/Proyectos/manu/ios/Localizer/Tests/LocalizerTests/Resources/LocalizerExampleProject/LocalizerExampleProject/Localizables",
-        searchPaths: [
-            "~/Desktop/Proyectos/manu/ios/Localizer/Tests/LocalizerTests/Resources/LocalizerExampleProject/LocalizerExampleProject"
-        ]
-    )
+    private var resourcesURL: URL {
+        let resourcesPath = Bundle.module.resourcePath!
+        return URL(fileURLWithPath: resourcesPath)
+    }
+        
+    private var projectTestPath: String {
+        return resourcesURL.appendingPathComponent("LocalizerExampleProject/LocalizerExampleProject").path
+    }
+    
+    private var localizablesPath: String {
+        return resourcesURL.appendingPathComponent("LocalizerExampleProject/LocalizerExampleProject/Localizables").path
+    }
+    
+    private var parameters: Parameters {
+        return  Parameters(
+            localizableFilePath: localizablesPath,
+            searchPaths: [projectTestPath]
+        )
+    }
     
     override func setUp() {
         super.setUp()
-        
+    
+        print(projectTestPath)
         sut = ProjectDataSourceImp(parameters: parameters, configuration: .default)
     }
     
