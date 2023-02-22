@@ -19,11 +19,10 @@ jobs:
       matrix:
         macos:
           - 12
-          - 13
         xcode:
           - latest-stable
         include:
-          - macos: 13
+          - macos: 12
             xcode: latest
     runs-on: macos-${{ matrix.macos }}
     steps:
