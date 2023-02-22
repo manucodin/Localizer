@@ -1,5 +1,6 @@
 # Localizer
-[![Testing](https://github.com/MRodSebastian/Localizer/actions/workflows/main.yml/badge.svg)](https://github.com/MRodSebastian/Localizer/actions/workflows/main.yml) [![codecov](https://codecov.io/gh/MRodSebastian/Localizer/branch/master/graph/badge.svg?token=HORRM5YZ4X)](https://codecov.io/gh/MRodSebastian/Localizer) [![Swift](https://img.shields.io/badge/swift-5.0-red)](https://cocoapods.org/pods/InstaGallery) [![Platform](https://img.shields.io/badge/platform-ios-blue)](https://cocoapods.org/pods/InstaGallery) 
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/manucodin/Localizer/main.yml?label=Testing&logo=GitHub&style=for-the-badge) ![Swift Version](https://img.shields.io/badge/Swift-5.5-blue?style=for-the-badge&logo=swift) ![Platform](https://img.shields.io/badge/Platform-macOS-orange?style=for-the-badge&logo=apple) ![Mint](https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white&style=for-the-badge)
+
 
 Localizer is a simple tool for search your strings not localized in your project.
 
@@ -8,29 +9,26 @@ Localizer is a simple tool for search your strings not localized in your project
 ### From Source
 
 ````
-$ git clone https://github.com/MRodSebastian/Localizer.git
+$ git clone https://github.com/manucodin/Localizer.git
 $ cd Localizer
 $ make
 ````
-### With [Mint](https://github.com/yonaskolb/Mint)
+### 🌱 With [Mint](https://github.com/yonaskolb/Mint)
 ````
-$ mint install MRodSebastian/Localizer localizer
+$ mint install manucodin/Localizer localizer
 ````
 
 ### Using Localizer
 
 To launch the tool, only write in your terminal (-h if you want see a list with subcommands):
 ````
-$ localizer -p <Your proyect path> -l <Your localizables path>
+$ localizer compare -l <Your localizables path> -s <Path to search localizables>
 ````
 
-## Options
-**-p** or **--proyect-path**: Your project directory
+###### ❤️ Support
 
-**-l** or **--localizable-file-path**: Your localizable directory
+If you want to support this project, you can do some of these:\
+`1)` <ins><b>Press</b></ins> ⭐️. It's a great sign that Localizer is useful;\
+`2)` <ins><b>Share</b></ins> the project 🌍 somewhere with anybody;\
 
-**-r** or **--reverse-localizable**: Be default is ```false```, you match your localizables with your project localizables. Set this parameter to ```true``` if you want match your project localizables with your localizable strings.
-
-**-s** or **--show-unused-keys**: Is ```false``` be default. You can use this parameters if you want see your unused localizables.
-
-
+If you have any questions or feature requests, feel free to open a discussion or an issue.
