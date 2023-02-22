@@ -32,8 +32,8 @@ $ localizer compare -l <Your localizables path> -s <Path to search localizables>
 
 ###### ❤️ Support
 
-If you want to support this project, you can do some of these:\
-`1)` <ins><b>Press</b></ins> ⭐️. It's a great sign that Localizer is useful;\
-`2)` <ins><b>Share</b></ins> the project 🌍 somewhere with anybody;\
+If you want to support this project, you can do some of these
+1. Press ⭐️. It's a great sign that Localizer is useful
+2. Share the project 🌍 somewhere with anybody
 
 If you have any questions or feature requests, feel free to open a discussion or an issue.
