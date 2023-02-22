@@ -10,6 +10,10 @@ class Localizer < Formula
   license ""
 
   def install
-    system "make", "install", "prefix=#{prefix}"
+    bin.install Dir["bin/*"]
+  end
+
+  test do
+    system "#{bin}/localizer" "import Foundation\n"
   end
 end

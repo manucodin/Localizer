@@ -4,8 +4,6 @@ BIN_PATH = /usr/local/bin
 INSTALL_PATH = $(BIN_PATH)/$(EXECUTABLE_NAME)
 BUILD_PATH = .build/release/$(EXECUTABLE_NAME)
 
-.PHONY: build install uninstall clean
-
 install: build
 	cp -f $(BUILD_PATH) $(INSTALL_PATH)
 
@@ -18,3 +16,5 @@ build:
 
 clean:
 	rm -rf .build
+
+.PHONY: build install uninstall clean
