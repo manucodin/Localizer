@@ -1,14 +1,21 @@
 EXECUTABLE_NAME = localizer
 
-BIN_PATH = /usr/local/bin
-INSTALL_PATH = $(BIN_PATH)/$(EXECUTABLE_NAME)
-BUILD_PATH = .build/release/$(EXECUTABLE_NAME)
-
-.PHONY: install build
-
-install: build
-	cp -f $(BUILD_PATH) $(INSTALL_PATH)
+prefix ?= /usr/local
+bindir = $(prefix)/bin
+libdir = $(prefix)/lib
 
 build:
 	rm -rf .build
-	swift build --configuration release
+	swift build -c release --disable-sandbox
+
+install: build
+	install -d "$(bindir)" "$(libdir)"
+	install ".build/release/$(EXECUTABLE_NAME)" "$(bindir)"
+
+uninstall:
+		rm -rf "$(bindir)/$(EXECUTABLE_NAME)"
+
+clean:
+	rm -rf .build
+
+.PHONY: build install uninstall clean

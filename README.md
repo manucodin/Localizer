@@ -1,5 +1,5 @@
 # Localizer
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/manucodin/Localizer/main.yml?label=Testing&logo=GitHub&style=for-the-badge) ![Swift Version](https://img.shields.io/badge/Swift-5.5-blue?style=for-the-badge&logo=swift) ![Platform](https://img.shields.io/badge/Platform-macOS-orange?style=for-the-badge&logo=apple) ![Mint](https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white&style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/manucodin/Localizer/main.yml?label=Testing&logo=GitHub&style=for-the-badge) ![Swift Version](https://img.shields.io/badge/Swift-5.5-blue?style=for-the-badge&logo=swift) ![Platform](https://img.shields.io/badge/Platform-macOS-orange?style=for-the-badge&logo=apple) ![Mint](https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white&style=for-the-badge) ![Homebrew](https://img.shields.io/badge/Homebrew-orange?logo=Homebrew&logoColor=white&style=for-the-badge)
 
 
 Localizer is a simple tool for search your strings not localized in your project.
@@ -16,6 +16,11 @@ $ make
 ### 🌱 With [Mint](https://github.com/yonaskolb/Mint)
 ````
 $ mint install manucodin/Localizer localizer
+````
+### 🍺 With [Homebrew](https://brew.sh/index_es)
+````
+$ brew tap manucodin/localizer
+$ brew install localizer
 ````
 
 ### Using Localizer
