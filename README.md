@@ -19,7 +19,7 @@ $ mint install manucodin/Localizer localizer
 ````
 ### 🍺 With [Homebrew](https://brew.sh/index_es)
 ````
-$ brew tap manucodin/localizer
+$ brew tap manucodin/localizer https://github.com/manucodin/Localizer.git
 $ brew install localizer
 ````
 
