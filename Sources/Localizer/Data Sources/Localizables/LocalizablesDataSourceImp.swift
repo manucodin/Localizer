@@ -34,7 +34,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
                 if !languageLocalizable.localizables.contains(projectLocalizable) {
                     unlocalizableKeys.insert(projectLocalizable)
                     if parameters.verbose {
-                        print("Not found \"\(projectLocalizable)\" for '\(languageLocalizable.languageCode)' language")
+                        print("Not found \"\(projectLocalizable)\" for '\(languageLocalizable.languageCode.uppercased())' language")
                     }
                 }
             }
@@ -53,11 +53,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         return try await withThrowingTaskGroup(of: LocalizablesResult.self) { taskGroup in
             languagesPath.forEach { languagePath in
                 taskGroup.addTask {
-                    do {
-                        return try await self.fetchLocalizableKeys(localizableFile: languagePath)
-                    } catch {
-                        return LocalizablesResult(languageCode: "", localizables: Set<String>())
-                    }
+                    return try await self.fetchLocalizableKeys(localizableFile: languagePath)
                 }
             }
             
@@ -81,7 +77,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         do {
             fileContent = try String(contentsOfFile: "\(filePath)Localizable.strings")
         } catch let error {
-            print("Not found localizables for '\(languageCode)'. \(error)".red)
+            print("Not found localizables for '\(languageCode.uppercased())'. \(error)".red)
             return LocalizablesResult(languageCode: languageCode, localizables: Set<String>())
         }
         
