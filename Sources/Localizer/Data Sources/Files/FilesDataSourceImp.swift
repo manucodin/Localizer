@@ -13,8 +13,8 @@ internal class FilesDataSourceImp: FilesDataSource {
         do {
             let folders = try Folder(path: path).subfolders.map{ $0.path }
             return Set<String>(folders)
-        } catch {
-            throw LocalizerError.invalidPath(path: path)
+        } catch let error {
+            throw error
         }
     }
     
@@ -26,24 +26,24 @@ internal class FilesDataSourceImp: FilesDataSource {
                 return files.map{ $0.path }
             }
             return Set<String>(filesPaths)
-        } catch {
-            throw LocalizerError.invalidPath(path: path)
+        } catch let error {
+            throw error
         }
     }
 
-    func fetchFileContent(fromPath path: String, encoding: String.Encoding) throws -> String {
+    func fetchFileContent(fromPath path: String) throws -> String {
         do {
-            return try File(path: path).readAsString(encodedAs: encoding)
-        } catch {
-            throw LocalizerError.invalidPath(path: path)
+            return try File(path: path).readAsString()
+        } catch let error {
+            throw error
         }
     }
     
     func fetchFileData(fromPath path: String) throws -> Data {
         do {
             return try File(path: path).read()
-        } catch {
-            throw LocalizerError.invalidPath(path: path)
+        } catch let error {
+            throw error
         }
     }
 }
