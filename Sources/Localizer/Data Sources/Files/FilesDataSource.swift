@@ -11,6 +11,6 @@ import Files
 internal protocol FilesDataSource {
     func fetchFolders(fromPath path: String) throws -> Set<String>
     func fetchRecursiveFiles(fromPath path: String, extensions: Set<String>) throws -> Set<String>
-    func fetchFileContent(fromPath path: String, encoding: String.Encoding) throws -> String
+    func fetchFileContent(fromPath path: String) throws -> String
     func fetchFileData(fromPath path: String) throws -> Data
 }

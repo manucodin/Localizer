@@ -25,7 +25,6 @@ internal class ProjectDataSourceImp: ProjectDataSource {
                     return try await self.fetchLocalizableKeys(
                         fromPath: searchablePath,
                         extensions: self.configuration.formatsSupported,
-                        enconding: self.configuration.fileEncoding,
                         pattern: self.configuration.capturePattern
                     )
                 }
@@ -40,7 +39,7 @@ internal class ProjectDataSourceImp: ProjectDataSource {
         }
     }
     
-    private func fetchLocalizableKeys(fromPath path: String, extensions: Set<String>, enconding: String.Encoding, pattern: String) async throws -> Set<String> {
+    private func fetchLocalizableKeys(fromPath path: String, extensions: Set<String>, pattern: String) async throws -> Set<String> {
         return try await withThrowingTaskGroup(of: Set<String>.self) { taskGroup in
             let files = try filesDataSource.fetchRecursiveFiles(fromPath: path, extensions: extensions)
             
@@ -61,8 +60,7 @@ internal class ProjectDataSourceImp: ProjectDataSource {
     
     private func searchLocalizables(atFilePath filePath: String) async throws -> Set<String> {
         let fileContent = try filesDataSource.fetchFileContent(
-            fromPath: filePath,
-            encoding: configuration.fileEncoding
+            fromPath: filePath
         )
         
         let fileRange = NSRange(fileContent.startIndex..<fileContent.endIndex, in: fileContent)

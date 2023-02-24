@@ -34,7 +34,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
                 if !languageLocalizable.localizables.contains(projectLocalizable) {
                     unlocalizableKeys.insert(projectLocalizable)
                     if parameters.verbose {
-                        print("Not found \"\(projectLocalizable)\" for \(languageLocalizable.languageCode) language")
+                        print("Not found \"\(projectLocalizable)\" for '\(languageLocalizable.languageCode.uppercased())' language")
                     }
                 }
             }
@@ -73,16 +73,13 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         
         let languageCode = String(languageCodeValue)
         
-        let fileContent = try? filesDataSource.fetchFileContent(
-            fromPath: "\(filePath)Localizable.strings",
-            encoding: configuration.fileEncoding
-        )
-        
-        guard let fileContent else {
-            print("Not found localizables for \(languageCode)".red)
+        let fileContent: String
+        do {
+            fileContent = try String(contentsOfFile: "\(filePath)Localizable.strings")
+        } catch let error {
+            print("Not found localizables for '\(languageCode.uppercased())'. \(error)".red)
             return LocalizablesResult(languageCode: languageCode, localizables: Set<String>())
         }
-        
         
         let fileRange = NSRange(fileContent.startIndex..<fileContent.endIndex, in: fileContent)
         let captureRegex = try NSRegularExpression(
@@ -105,7 +102,6 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
                 }
             }
         }
-                
         
         return LocalizablesResult(languageCode: languageCode, localizables: results)
     }

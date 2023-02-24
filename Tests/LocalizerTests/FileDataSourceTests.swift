@@ -33,7 +33,7 @@ class FileDataSourceTests: XCTestCase {
         }
 
         do {
-            let fileContent = try sut.fetchFileContent(fromPath: filePath, encoding: .utf8)
+            let fileContent = try sut.fetchFileContent(fromPath: filePath)
 
             XCTAssertNotNil(fileContent)
             XCTAssertTrue(fileContent.contains("Hello world!"))
@@ -43,6 +43,6 @@ class FileDataSourceTests: XCTestCase {
     }
     
     func testFetchInvalidFile() {
-        XCTAssertThrowsError(try sut.fetchFileContent(fromPath: "../Resources/unexpected.txt", encoding: .utf8))
+        XCTAssertThrowsError(try sut.fetchFileContent(fromPath: "../Resources/unexpected.txt"))
     }
 }
