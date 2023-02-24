@@ -33,7 +33,9 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
             languagesLocalizables.forEach { languageLocalizable in
                 if !languageLocalizable.localizables.contains(projectLocalizable) {
                     unlocalizableKeys.insert(projectLocalizable)
-                    print("Not found \"\(projectLocalizable)\" for \(languageLocalizable.languageCode) language")
+                    if parameters.verbose {
+                        print("Not found \"\(projectLocalizable)\" for \(languageLocalizable.languageCode) language")
+                    }
                 }
             }
         }

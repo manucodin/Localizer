@@ -19,10 +19,14 @@ struct Compare: AsyncParsableCommand {
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Paths to search strings localizables")
     private var searchPaths: [String]
     
+    @Flag(name: .shortAndLong, help: "Show all output or only the strings unlocalizable number")
+    private var verbose: Bool = false
+    
     mutating func run() async throws {
         let parameters = Parameters(
             localizableFilePath: localizableFilePath,
-            searchPaths: searchPaths
+            searchPaths: searchPaths,
+            verbose: verbose
         )
         
         do {

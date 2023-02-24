@@ -29,6 +29,7 @@ To launch the tool, only write in your terminal (-h if you want see a list with 
 ````
 $ localizer compare -l <Your localizables path> -s <Path to search localizables>
 ````
+You can user the flag ````-v```` to show all output or only the strings unlocalized number
 
 ###### ❤️ Support
 
