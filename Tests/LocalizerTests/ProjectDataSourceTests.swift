@@ -30,7 +30,8 @@ final class ProjectDataSourceTests: XCTestCase {
     private var parameters: Parameters {
         return  Parameters(
             localizableFilePath: localizablesPath,
-            searchPaths: [projectTestPath]
+            searchPaths: [projectTestPath],
+            verbose: true
         )
     }
     
