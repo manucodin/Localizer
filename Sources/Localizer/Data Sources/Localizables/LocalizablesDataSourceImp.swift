@@ -46,7 +46,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
     }
     
     private func fetchLanguagesPaths() async throws -> Set<String> {
-        return try filesDataSource.fetchFolders(fromPath: parameters.localizableFilePath)
+        return try filesDataSource.fetchFolders(fromPath: parameters.localizableFilePath).filter{ $0.contains(".lproj") }
     }
     
     private func fetchLocalizables(forLanguagesPaths languagesPath: Set<String>) async throws -> [LocalizablesResult] {
@@ -67,14 +67,22 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
     }
     
     private func fetchLocalizableKeys(localizableFile filePath: String) async throws -> LocalizablesResult {
-        guard let languageCode = URL(string: filePath)?.lastPathComponent.split(separator: ".").first else {
+        guard let languageCodeValue = URL(string: filePath)?.lastPathComponent.split(separator: ".").first else {
             throw NSError(domain: "test", code: 0)
         }
         
-        let fileContent = try filesDataSource.fetchFileContent(
+        let languageCode = String(languageCodeValue)
+        
+        let fileContent = try? filesDataSource.fetchFileContent(
             fromPath: "\(filePath)Localizable.strings",
             encoding: configuration.fileEncoding
         )
+        
+        guard let fileContent else {
+            print("Not found localizables for \(languageCode)".red)
+            return LocalizablesResult(languageCode: languageCode, localizables: Set<String>())
+        }
+        
         
         let fileRange = NSRange(fileContent.startIndex..<fileContent.endIndex, in: fileContent)
         let captureRegex = try NSRegularExpression(
@@ -99,6 +107,6 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         }
                 
         
-        return LocalizablesResult(languageCode: String(languageCode), localizables: results)
+        return LocalizablesResult(languageCode: languageCode, localizables: results)
     }
 }

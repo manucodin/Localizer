@@ -20,7 +20,7 @@ public struct Configuration {
             fileEncoding: .utf8,
             formatsSupported: [.swift, .objC],
             capturePattern: #"(?:.*\"(.*)\".localized)|NSLocalizedString\(\s*"([^"]+)"(?:\s*,|\s*comment:\s*"[^"]*"\s*\))"#,
-            localizablesPattern: #"\"(.*)\" ="#
+            localizablesPattern: #"\"(.*)\".* ?="#
         )
     }
 
