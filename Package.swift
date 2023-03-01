@@ -25,7 +25,6 @@ let package = Package(
             name: "LocalizerTests",
             dependencies: ["Localizer"],
             resources: [
-                .copy("Resources/example.txt"),
                 .copy("Resources/LocalizerExampleProject")
             ]),
     ]

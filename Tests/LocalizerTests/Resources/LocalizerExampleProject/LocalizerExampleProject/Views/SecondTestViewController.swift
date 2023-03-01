@@ -25,8 +25,9 @@ class SecondTestViewController: UIViewController {
         
         var test4 = "test4".localized()
         
-        let test4 = "hey_text".localized()
-        let test5 = "bye_text".localized()
+        let test5 = "test_5".localized()
+        let test6 = "test_6_".localized()
+        let test7 = "test \"test\" 7".localized()
     }
 }
 

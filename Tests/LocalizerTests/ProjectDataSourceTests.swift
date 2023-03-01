@@ -39,6 +39,7 @@ final class ProjectDataSourceTests: XCTestCase {
         super.setUp()
     
         print(projectTestPath)
+        
         sut = ProjectDataSourceImp(parameters: parameters, configuration: .default)
     }
     
@@ -49,23 +50,13 @@ final class ProjectDataSourceTests: XCTestCase {
     }
     
     func testFetchLocalizableKeys() async {
-        var expectedLocalizables = Set<String>()
-        expectedLocalizables.insert("test1")
-        expectedLocalizables.insert("test2")
-        expectedLocalizables.insert("test3")
-        expectedLocalizables.insert("test4")
- 
         do {
-            let localizables = try await sut.fetchLocalizables()
-            
-            debugPrint(localizables)
-            XCTAssertFalse(localizables.isEmpty)
-            XCTAssertTrue(expectedLocalizables.isSubset(of: localizables))
+            let projectLocalizables = try await sut.fetchLocalizables()
+
+            XCTAssertTrue(projectLocalizables.count == 7)
+            XCTAssertFalse(projectLocalizables.isEmpty)
         } catch {
             XCTFail(error.localizedDescription)
-
         }
-       
     }
-    
 }

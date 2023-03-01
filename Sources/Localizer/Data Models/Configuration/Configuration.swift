@@ -15,11 +15,11 @@ public struct Configuration {
     public static var `default`: Configuration {
         return Configuration(
             formatsSupported: [.swift, .objC],
-            capturePattern: #"(?:.*\"(.*)\".localized)|NSLocalizedString\(\s*"([^"]+)"(?:\s*,|\s*comment:\s*"[^"]*"\s*\))"#,
+            capturePattern: #"\"([^"\\]*(?:\\.[^"\\]*)*)\".localized|NSLocalizedString\(\s*"([^"]+)"(?:\s*,|\s*comment:\s*"[^"]*"\s*\))"#,
             localizablesPattern: #"\"(.*)\".* ?="#
         )
     }
-
+    
     private init(formatsSupported: [FormatsSupported], capturePattern: String, localizablesPattern: String) {
         self.formatsSupported = Set<String>(formatsSupported.map{ $0.rawValue })
         self.capturePattern = capturePattern
