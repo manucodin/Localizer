@@ -45,11 +45,11 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         }        
     }
     
-    private func fetchLanguagesPaths() async throws -> Set<String> {
+    internal func fetchLanguagesPaths() async throws -> Set<String> {
         return try filesDataSource.fetchFolders(fromPath: parameters.localizableFilePath).filter{ $0.contains(".lproj") }
     }
     
-    private func fetchLocalizables(forLanguagesPaths languagesPath: Set<String>) async throws -> [LocalizablesResult] {
+    internal func fetchLocalizables(forLanguagesPaths languagesPath: Set<String>) async throws -> [LocalizablesResult] {
         return try await withThrowingTaskGroup(of: LocalizablesResult.self) { taskGroup in
             languagesPath.forEach { languagePath in
                 taskGroup.addTask {

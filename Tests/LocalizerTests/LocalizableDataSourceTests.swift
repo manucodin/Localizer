@@ -1,24 +1,23 @@
 //
-//  FileDataSourceTests.swift
+//  LocalizableDataSourceTests.swift
 //  
 //
-//  Created by Manuel Rodriguez Sebastian on 21/2/23.
+//  Created by Manuel Rodriguez Sebastian on 1/3/23.
 //
 
 import XCTest
-import Foundation
 
 @testable import Localizer
 
-class FileDataSourceTests: XCTestCase {
-    
-    var sut: FilesDataSourceImp!
+final class LocalizableDataSourceTests: XCTestCase {
+
+    private var sut: LocalizablesDataSourceImp!
     
     private var resourcesURL: URL {
         let resourcesPath = Bundle.module.resourcePath!
         return URL(fileURLWithPath: resourcesPath)
     }
-    
+        
     private var projectTestPath: String {
         return resourcesURL.appendingPathComponent("LocalizerExampleProject/LocalizerExampleProject").path
     }
@@ -35,12 +34,12 @@ class FileDataSourceTests: XCTestCase {
         )
     }
     
-    private let configuration: Configuration = .default
-    
     override func setUp() {
         super.setUp()
+    
+        print(projectTestPath)
         
-        sut = FilesDataSourceImp()
+        sut = LocalizablesDataSourceImp(parameters: parameters, configuration: .default)
     }
     
     override func tearDown() {
@@ -49,17 +48,19 @@ class FileDataSourceTests: XCTestCase {
         sut = nil
     }
     
-    func testFetchFile() {
+    func testCompareLocalizables() async {
         do {
-            let files = try sut.fetchRecursiveFiles(fromPath: projectTestPath, extensions: configuration.formatsSupported)
-            XCTAssertFalse(files.isEmpty)
+            try await sut.compare()
         } catch let error {
             XCTFail(error.localizedDescription)
         }
     }
-    
-    func testFetchInvalidFile() {
-        let badPath = projectTestPath.appending("BAD")
-        XCTAssertThrowsError(try sut.fetchRecursiveFiles(fromPath: badPath, extensions: configuration.formatsSupported))
+
+    func testCompareLocalizablesPerformance() {
+        self.measure {
+            Task {
+                await self.testCompareLocalizables()
+            }
+        }
     }
 }
