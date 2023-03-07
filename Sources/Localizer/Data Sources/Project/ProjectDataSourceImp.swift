@@ -41,7 +41,6 @@ internal class ProjectDataSourceImp: ProjectDataSource {
     
     func fetchWhiteListKeys() async throws -> Set<String> {
         let whiteListPath = filesDataSource.currentFolder.appending(".localizerignore")
-        print("WHITELIST PAAAATH \(whiteListPath) ")
         return try await searchKeys(whiteListPath, configuration.whitelistPattern)
     }
     
