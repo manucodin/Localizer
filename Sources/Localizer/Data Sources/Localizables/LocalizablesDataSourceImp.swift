@@ -23,33 +23,15 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
     }
     
     func compare() async throws {
-        let languagesPath = try await self.fetchLanguagesPaths()
-        let languagesLocalizables = try await self.fetchLocalizables(forLanguagesPaths: languagesPath)
+        let languagesLocalizables = try await self.fetchLocalizables()
         let projectLocalizables = try await self.projectDataSource.fetchLocalizables()
+        let whiteListKeys = try await self.projectDataSource.fetchWhiteListKeys()
         
-        var unlocalizableKeys = Set<String>()
-        
-        projectLocalizables.forEach { projectLocalizable in
-            languagesLocalizables.forEach { languageLocalizable in
-                if !languageLocalizable.localizables.contains(projectLocalizable) {
-                    unlocalizableKeys.insert(projectLocalizable)
-                    if parameters.verbose {
-                        print("Not found \"\(projectLocalizable)\" for '\(languageLocalizable.languageCode.uppercased())' language")
-                    }
-                }
-            }
-        }
-        
-        if !unlocalizableKeys.isEmpty {
-            throw LocalizerError.unlocalizedStrings(totalUnlocalized: unlocalizableKeys.count)
-        }        
+        try compare(projectLocalizables, languagesLocalizables, whiteListKeys)
     }
     
-    internal func fetchLanguagesPaths() async throws -> Set<String> {
-        return try filesDataSource.fetchFolders(fromPath: parameters.localizableFilePath).filter{ $0.contains(".lproj") }
-    }
-    
-    internal func fetchLocalizables(forLanguagesPaths languagesPath: Set<String>) async throws -> [LocalizablesResult] {
+    internal func fetchLocalizables() async throws -> [LocalizablesResult] {
+        let languagesPath = try await self.fetchLanguagesPaths()
         return try await withThrowingTaskGroup(of: LocalizablesResult.self) { taskGroup in
             languagesPath.forEach { languagePath in
                 taskGroup.addTask {
@@ -63,6 +45,12 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
             }
             
             return projectLocalizables
+        }
+    }
+    
+    private func fetchLanguagesPaths() async throws -> Set<String> {
+        return try filesDataSource.fetchFolders(fromPath: parameters.localizableFilePath).filter{
+            $0.contains(LOCALIZABLE_FILE_EXTENSION)
         }
     }
     
@@ -104,5 +92,31 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         }
         
         return LocalizablesResult(languageCode: languageCode, localizables: results)
+    }
+    
+    private func compare(_ projectLocalizables: Set<String>, _ languagesLocalizables: [LocalizablesResult], _ whiteListKeys: Set<String>) throws {
+        var unlocalizableKeys = Set<String>()
+        
+        projectLocalizables.forEach { projectLocalizable in
+            languagesLocalizables.forEach { languageLocalizable in
+                if isUnlocalized(key: projectLocalizable, languageLocalizables: languageLocalizable.localizables, whiteList: whiteListKeys) {
+                    unlocalizableKeys.insert(projectLocalizable)
+                    if parameters.verbose {
+                        print("Not found \"\(projectLocalizable)\" for '\(languageLocalizable.languageCode.uppercased())' language")
+                    }
+                }
+            }
+        }
+        
+        if !unlocalizableKeys.isEmpty {
+            throw LocalizerError.unlocalizedStrings(totalUnlocalized: unlocalizableKeys.count)
+        }
+    }
+    
+    private func isUnlocalized(key: String, languageLocalizables: Set<String>, whiteList: Set<String>) -> Bool {
+        let notIgnoredKey = !whiteList.contains(key)
+        let isUnlocalizedKey = !languageLocalizables.contains(key)
+        
+        return notIgnoredKey && isUnlocalizedKey
     }
 }
