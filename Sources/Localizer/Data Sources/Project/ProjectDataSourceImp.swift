@@ -39,13 +39,19 @@ internal class ProjectDataSourceImp: ProjectDataSource {
         }
     }
     
+    func fetchWhiteListKeys() async throws -> Set<String> {
+        let whiteListPath = filesDataSource.currentFolder.appending(".localizerignore")
+        print("WHITELIST PAAAATH \(whiteListPath) ")
+        return try await searchKeys(whiteListPath, configuration.whitelistPattern)
+    }
+    
     private func fetchLocalizableKeys(fromPath path: String, extensions: Set<String>, pattern: String) async throws -> Set<String> {
         return try await withThrowingTaskGroup(of: Set<String>.self) { taskGroup in
             let files = try filesDataSource.fetchRecursiveFiles(fromPath: path, extensions: extensions)
             
             files.forEach { file in
                 taskGroup.addTask {
-                    return try await self.searchLocalizables(atFilePath: file)
+                    return try await self.searchKeys(file, self.configuration.capturePattern)
                 }
             }
             
@@ -58,14 +64,14 @@ internal class ProjectDataSourceImp: ProjectDataSource {
         }
     }
     
-    private func searchLocalizables(atFilePath filePath: String) async throws -> Set<String> {
-        let fileContent = try filesDataSource.fetchFileContent(
-            fromPath: filePath
-        )
+    private func searchKeys(_ filePath: String, _ capturePattern: String) async throws -> Set<String> {
+        guard let fileContent = try? filesDataSource.fetchFileContent(fromPath: filePath) else {
+            return Set<String>()
+        }
         
         let fileRange = NSRange(fileContent.startIndex..<fileContent.endIndex, in: fileContent)
         let captureRegex = try NSRegularExpression(
-            pattern: configuration.capturePattern,
+            pattern: capturePattern,
             options: .caseInsensitive
         )
         

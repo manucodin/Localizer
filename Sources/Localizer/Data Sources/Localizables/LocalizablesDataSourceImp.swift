@@ -26,12 +26,13 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         let languagesPath = try await self.fetchLanguagesPaths()
         let languagesLocalizables = try await self.fetchLocalizables(forLanguagesPaths: languagesPath)
         let projectLocalizables = try await self.projectDataSource.fetchLocalizables()
+        let whiteListKeys = try await self.projectDataSource.fetchWhiteListKeys()
         
         var unlocalizableKeys = Set<String>()
         
         projectLocalizables.forEach { projectLocalizable in
             languagesLocalizables.forEach { languageLocalizable in
-                if !languageLocalizable.localizables.contains(projectLocalizable) {
+                if !whiteListKeys.contains(projectLocalizable) && !languageLocalizable.localizables.contains(projectLocalizable) {
                     unlocalizableKeys.insert(projectLocalizable)
                     if parameters.verbose {
                         print("Not found \"\(projectLocalizable)\" for '\(languageLocalizable.languageCode.uppercased())' language")
