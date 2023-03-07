@@ -9,4 +9,5 @@ import Foundation
 
 internal protocol ProjectDataSource {
     func fetchLocalizables() async throws -> Set<String>
+    func fetchWhiteListKeys() async throws -> Set<String>
 }

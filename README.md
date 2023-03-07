@@ -31,6 +31,14 @@ $ localizer compare -l <Your localizables path> -s <Path to search localizables>
 ````
 You can user the flag ````-v```` to show all output or only the strings unlocalized number
 
+If you want ignore some keys, you can create a file named ````.localizerignore```` and add these keys in that file with this format
+
+````
+"key1"
+"key2"
+...
+````
+
 ###### ❤️ Support
 
 If you want to support this project, you can do some of these
