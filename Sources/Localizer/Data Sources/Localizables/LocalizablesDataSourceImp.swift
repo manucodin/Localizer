@@ -94,6 +94,13 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         return LocalizablesResult(languageCode: languageCode, localizables: results)
     }
     
+    fileprivate func extractedFunc(_ unlocalizableKeys: Set<String>) throws {
+        let notLocalizedMessage = unlocalizableKeys.map({ String(format: "Not localized %@", $0)})
+        let totalUnlocalizedMessage = "Unlocalized strings: \(unlocalizableKeys.count)"
+        let message = String(format: "\(notLocalizedMessage.joined(separator: "\n"))\n%@", totalUnlocalizedMessage)
+        throw LocalizerError.unlocalizedStringsWithMessage(message: message)
+    }
+    
     private func compare(_ projectLocalizables: Set<String>, _ languagesLocalizables: [LocalizablesResult], _ whiteListKeys: Set<String>) throws {
         var unlocalizableKeys = Set<String>()
         
@@ -110,8 +117,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         
         if !unlocalizableKeys.isEmpty {
             if parameters.unlocalizedKeys {
-                let message = unlocalizableKeys.map({ String(format: "Not localized %@", $0)}).joined(separator: "\n")
-                throw LocalizerError.unlocalizedStringsWithMessage(message: message, totalUnlocalized: unlocalizableKeys.count)
+                try extractedFunc(unlocalizableKeys)
             } else {
                 throw LocalizerError.unlocalizedStrings(totalUnlocalized: unlocalizableKeys.count)
             }
