@@ -42,7 +42,7 @@ struct Compare: AsyncParsableCommand {
             } else {
                 print(error.localizedDescription)
             }
-            Localizer.exit(withError: error)
+            Localizer.exit()
         }
     }
 }
