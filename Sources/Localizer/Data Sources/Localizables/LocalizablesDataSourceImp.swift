@@ -108,6 +108,12 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
             }
         }
         
+        if parameters.unlocalizedKeys {
+            unlocalizableKeys.forEach { unlocalizedKey in
+                print("Not localized \"\(unlocalizedKey)\"")
+            }
+        }
+        
         if !unlocalizableKeys.isEmpty {
             throw LocalizerError.unlocalizedStrings(totalUnlocalized: unlocalizableKeys.count)
         }
