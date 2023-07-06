@@ -31,6 +31,7 @@ final class ProjectDataSourceTests: XCTestCase {
         return  Parameters(
             localizableFilePath: localizablesPath,
             searchPaths: [projectTestPath],
+            unlocalizedKeys: false,
             verbose: true
         )
     }
