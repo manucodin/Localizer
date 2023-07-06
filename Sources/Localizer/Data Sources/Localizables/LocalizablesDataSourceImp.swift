@@ -108,14 +108,13 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
             }
         }
         
-        if parameters.unlocalizedKeys {
-            unlocalizableKeys.forEach { unlocalizedKey in
-                print("Not localized \"\(unlocalizedKey)\"")
-            }
-        }
-        
         if !unlocalizableKeys.isEmpty {
-            throw LocalizerError.unlocalizedStrings(totalUnlocalized: unlocalizableKeys.count)
+            if parameters.unlocalizedKeys {
+                let message = unlocalizableKeys.map({ String(format: "Not localized %@", $0)}).joined(separator: "\n")
+                throw LocalizerError.unlocalizedStringsWithMessage(message: message, totalUnlocalized: unlocalizableKeys.count)
+            } else {
+                throw LocalizerError.unlocalizedStrings(totalUnlocalized: unlocalizableKeys.count)
+            }
         }
     }
     
