@@ -54,7 +54,7 @@ final class ProjectDataSourceTests: XCTestCase {
         do {
             let projectLocalizables = try await sut.fetchLocalizables()
 
-            XCTAssertTrue(projectLocalizables.count == 7)
+            XCTAssertTrue(projectLocalizables.count == 8)
             XCTAssertFalse(projectLocalizables.isEmpty)
         } catch {
             XCTFail(error.localizedDescription)
