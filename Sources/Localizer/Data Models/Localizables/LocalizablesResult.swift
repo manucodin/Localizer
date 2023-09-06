@@ -9,9 +9,9 @@ import Foundation
 
 public struct LocalizablesResult {
     public let languageCode: String
-    public let localizables: Set<String>
+    public let localizables: Set<LocalizableValue>
     
-    public init(languageCode: String, localizables: Set<String>) {
+    public init(languageCode: String, localizables: Set<LocalizableValue>) {
         self.languageCode = languageCode
         self.localizables = localizables
     }

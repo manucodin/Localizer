@@ -66,7 +66,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
             fileContent = try String(contentsOfFile: "\(filePath)Localizable.strings")
         } catch let error {
             print("Not found localizables for '\(languageCode.uppercased())'. \(error)".red)
-            return LocalizablesResult(languageCode: languageCode, localizables: Set<String>())
+            return LocalizablesResult(languageCode: languageCode, localizables: Set<LocalizableValue>())
         }
         
         let fileRange = NSRange(fileContent.startIndex..<fileContent.endIndex, in: fileContent)
@@ -77,16 +77,22 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         
         let matches = captureRegex.matches(in: fileContent, range: fileRange)
         
-        var results = Set<String>()
+        var results = Set<LocalizableValue>()
         matches.forEach { match in
             for rangeIndex in 1..<match.numberOfRanges {
-                let matchRange = match.range(at: rangeIndex)
+                guard match.numberOfRanges > 2  && rangeIndex == 1 else { continue }
+                    
+                let keyRange = match.range(at: rangeIndex)
+                let valueRange = match.range(at: rangeIndex+1)
                 
-                if matchRange == fileRange { continue }
-                
-                if let substringRange = Range(matchRange, in: fileContent) {
-                    let capture = String(fileContent[substringRange])
-                    results.insert(capture)
+                if keyRange == fileRange { continue }
+
+                if let substringKeyRange = Range(keyRange, in: fileContent), let substringValueRange = Range(valueRange, in: fileContent){
+                    let key = String(fileContent[substringKeyRange])
+                    let value = String(fileContent[substringValueRange])
+                    
+                    let localizableValue = LocalizableValue(key: key, value: value)
+                    results.insert(localizableValue)
                 }
             }
         }
@@ -118,9 +124,13 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         }
     }
     
-    private func isUnlocalized(key: String, languageLocalizables: Set<String>, whiteList: Set<String>) -> Bool {
+    private func isUnlocalized(key: String, languageLocalizables: Set<LocalizableValue>, whiteList: Set<String>) -> Bool {
         let notIgnoredKey = !whiteList.contains(key)
-        let isUnlocalizedKey = !languageLocalizables.contains(key)
+        let isUnlocalizedKey = !languageLocalizables.contains(where: { $0.key == key })
+        
+        if let value = languageLocalizables.first(where: { $0.key == key })?.value, value.isEmpty {
+            return true
+        }
         
         return notIgnoredKey && isUnlocalizedKey
     }

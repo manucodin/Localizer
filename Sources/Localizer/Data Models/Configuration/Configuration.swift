@@ -17,7 +17,7 @@ public struct Configuration {
         return Configuration(
             formatsSupported: [.swift, .objC],
             capturePattern: #"\"([^"\\]*(?:\\.[^"\\]*)*)\".localized|NSLocalizedString\(\s*"([^"]+)"(?:\s*,|\s*comment:\s*"[^"]*"\s*\))"#,
-            localizablesPattern: #"\"(.*)\".* ?="#,
+            localizablesPattern: #"\"(.*)\".* ?= \"(.*)\""#,
             whitelistPattern: #"\"([^"\\]*(?:\\.[^"\\]*)*)\""#
         )
     }
