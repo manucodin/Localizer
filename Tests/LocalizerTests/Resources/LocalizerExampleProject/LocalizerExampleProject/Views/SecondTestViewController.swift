@@ -28,6 +28,8 @@ class SecondTestViewController: UIViewController {
         let test5 = "test_5".localized()
         let test6 = "test_6_".localized()
         let test7 = "test \"test\" 7".localized()
+        
+        let test8 = "test8".localized()
     }
 }
 
