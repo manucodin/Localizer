@@ -6,7 +6,7 @@ import Rainbow
 struct Localizer: AsyncParsableCommand {
     public static var configuration = CommandConfiguration(
         abstract: "🔍 Search unlocalized strings on your project easily and quickly",
-        version: "1.0.7",
+        version: "1.1.0",
         subcommands: [
             Compare.self
         ],
