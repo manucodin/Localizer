@@ -27,7 +27,11 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         let projectLocalizables = try await self.projectDataSource.fetchLocalizables()
         let whiteListKeys = try await self.projectDataSource.fetchWhiteListKeys()
         
-        try compare(projectLocalizables, languagesLocalizables, whiteListKeys)
+        if parameters.unusedKeys {
+            try unused(projectLocalizables, languagesLocalizables, whiteListKeys)
+        } else {
+            try compare(projectLocalizables, languagesLocalizables, whiteListKeys)
+        }
     }
     
     internal func fetchLocalizables() async throws -> [LocalizablesResult] {
@@ -122,6 +126,20 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
                 throw LocalizerError.unlocalizedStrings(totalUnlocalized: unlocalizableKeys.count)
             }
         }
+    }
+    
+    private func unused(_ projectLocalizables: Set<String>, _ languagesLocalizables: [LocalizablesResult], _ whiteListKeys: Set<String>) throws {
+        let flattedLocalizables = Set<String>(languagesLocalizables.flatMap({ $0.localizables.map({ $0.key }) }))
+        let unnusedKeys = flattedLocalizables.symmetricDifference(projectLocalizables)
+        
+        if !unnusedKeys.isEmpty {
+            if parameters.verbose {
+                let message = "\(unnusedKeys.joined(separator: "\n"))\nUnnused strings: \(unnusedKeys.count)"
+                throw LocalizerError.unusedStringsWithMessage(message: message)
+            } else {
+                throw LocalizerError.unusedStrings(totalUnusedKeys: unnusedKeys.count)
+            }
+        }        
     }
     
     private func isUnlocalized(key: String, languageLocalizables: Set<LocalizableValue>, whiteList: Set<String>) -> Bool {

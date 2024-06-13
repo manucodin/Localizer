@@ -9,14 +9,20 @@ import Foundation
 
 enum LocalizerError: Error {
     case invalidPath(path: String)
+    
     case unlocalizedStrings(totalUnlocalized: Int)
     case unlocalizedStringsWithMessage(message: String)
+    
+    case unusedStrings(totalUnusedKeys: Int)
+    case unusedStringsWithMessage(message: String)
     
     public var description: String {
         switch self {
         case .invalidPath(let path): return "Invalid path for: \(path)"
         case .unlocalizedStrings(let totalUnlocalized): return "Unlocalized strings: \(totalUnlocalized)"
         case .unlocalizedStringsWithMessage(let message): return message
+        case .unusedStrings(let totalUnusedKeys): return "Unused strings: \(totalUnusedKeys)"
+        case .unusedStringsWithMessage(let message): return message
         }
     }
 }
