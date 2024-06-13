@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum FormatsSupported :String, CaseIterable{
+enum FormatsSupported :String, CaseIterable{
     case swift = "swift"
     case objC = "m"
 }

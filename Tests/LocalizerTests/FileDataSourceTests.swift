@@ -14,21 +14,21 @@ class FileDataSourceTests: XCTestCase {
     
     var sut: FilesDataSourceImp!
     
-    private var resourcesURL: URL {
+    var resourcesURL: URL {
         let resourcesPath = Bundle.module.resourcePath!
         return URL(fileURLWithPath: resourcesPath)
     }
     
-    private var projectTestPath: String {
+    var projectTestPath: String {
         return resourcesURL.appendingPathComponent("LocalizerExampleProject/LocalizerExampleProject").path
     }
     
-    private var localizablesPath: String {
+    var localizablesPath: String {
         return resourcesURL.appendingPathComponent("LocalizerExampleProject/LocalizerExampleProject/Localizables").path
     }
     
-    private var parameters: Parameters {
-        return  Parameters(
+    var parameters: CompareParameters {
+        return  CompareParameters(
             localizableFilePath: localizablesPath,
             searchPaths: [projectTestPath],
             unlocalizedKeys: false,
@@ -36,7 +36,7 @@ class FileDataSourceTests: XCTestCase {
         )
     }
     
-    private let configuration: Configuration = .default
+    let configuration: Configuration = .default
     
     override func setUp() {
         super.setUp()

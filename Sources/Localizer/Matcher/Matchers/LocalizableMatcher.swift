@@ -7,14 +7,18 @@
 
 import Foundation
 
-public class LocalizableMatcher: Matchable {
-    private let localizablesDataSource: LocalizablesDataSource
+class LocalizableMatcher: Matchable {
+    let localizablesDataSource: LocalizablesDataSource
     
-    public init(parameters: Parameters, configuration: Configuration = .default) {
-        self.localizablesDataSource = LocalizablesDataSourceImp(parameters: parameters, configuration: configuration)
+    init(_ localizablesDataSource: LocalizablesDataSource = LocalizablesDataSourceImp()) {
+        self.localizablesDataSource = localizablesDataSource
     }
     
-    public func match() async throws {
-        try await localizablesDataSource.compare()
+    func compare(_ parameters: CompareParameters) async throws {
+        try await localizablesDataSource.compare(parameters)
+    }
+    
+    func search(_ parameters: SearchParameters) async throws {
+        try await localizablesDataSource.search(parameters)
     }
 }
