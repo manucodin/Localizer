@@ -56,20 +56,35 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
     }
     
     func makeSearch(_ parameters: SearchParameters) async throws {
-        let languagesLocalizables = try await fetchLangugeLocalizables(parameters)
+        let flattedLocalizables = try await Set<String>(fetchLangugeLocalizables(parameters).flatMap({ $0.localizables.map({ $0.key} )}))
         let projectLocalizables = try await projectDataSource.fetchLocalizables(parameters.searchPaths)
         
-        let flattedLocalizables = Set<String>(languagesLocalizables.flatMap({ $0.localizables.map({ $0.key }) }))
-        let unnusedKeys = flattedLocalizables.symmetricDifference(projectLocalizables)
+        let keys = parameters.unusedKeys ? getNotUsedKeys(projectLocalizables, flattedLocalizables) : getUsedKeys(projectLocalizables, flattedLocalizables)
         
-        if !unnusedKeys.isEmpty {
+        let searchResult = searchKey(parameters.key, keys: keys)
+        
+        if !searchResult.isEmpty {
             if parameters.verbose {
-                let message = "\(unnusedKeys.joined(separator: "\n"))\nUnnused strings: \(unnusedKeys.count)"
+                let message = "\(searchResult.joined(separator: "\n"))\nUnnused strings: \(searchResult.count)"
                 throw LocalizerError.unusedStringsWithMessage(message: message)
             } else {
-                throw LocalizerError.unusedStrings(totalUnusedKeys: unnusedKeys.count)
+                throw LocalizerError.unusedStrings(totalUnusedKeys: searchResult.count)
             }
         }
+    }
+        
+    func getUsedKeys(_ projectLocalizables: Set<String>, _ localizables: Set<String>) -> Set<String> {
+        return localizables.union(projectLocalizables)
+    }
+    
+    func getNotUsedKeys(_ projectLocalizables: Set<String>, _ localizables: Set<String>) -> Set<String> {
+        return localizables.symmetricDifference(projectLocalizables)
+    }
+    
+    func searchKey(_ keyToSearch: String, keys: Set<String>) -> Set<String> {
+        guard !keyToSearch.isEmpty else { return keys }
+        
+        return keys.filter({ $0.elementsEqual(keyToSearch) })
     }
     
     func fetchLangugeLocalizables(_ parameters: Parameters) async throws -> [LocalizablesResult] {

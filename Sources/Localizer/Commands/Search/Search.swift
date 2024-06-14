@@ -19,8 +19,8 @@ struct Search: AsyncParsableCommand, LocalizerCommand {
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Paths to search strings localizables")
     var searchPaths: [String]
     
-    @Option(name: .shortAndLong, help: "Localizable to search")
-    var localizable: String = ""
+    @Option(name: .shortAndLong, help: "Localizable key to search")
+    var key: String = ""
     
     @Flag(name: .shortAndLong, help: "Show unused keys")
     var unusedKeys: Bool = false
@@ -37,6 +37,6 @@ struct Search: AsyncParsableCommand, LocalizerCommand {
     }
     
     func buildParameters() -> SearchParameters {
-        return SearchParameters(localizableFilePath: localizableFilePath, searchPaths: searchPaths, localizable: localizable, unusedKeys: unusedKeys, verbose: verbose)
+        return SearchParameters(localizableFilePath: localizableFilePath, searchPaths: searchPaths, key: key, unusedKeys: unusedKeys, verbose: verbose)
     }
 }
