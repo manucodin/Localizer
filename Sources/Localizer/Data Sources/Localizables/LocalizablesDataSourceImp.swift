@@ -65,7 +65,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         
         if !searchResult.isEmpty {
             if parameters.verbose {
-                let message = "\(searchResult.joined(separator: "\n"))\nUnnused strings: \(searchResult.count)"
+                let message = "\(searchResult.joined(separator: "\n"))\nResults: \(searchResult.count)"
                 throw LocalizerError.unusedStringsWithMessage(message: message)
             } else {
                 throw LocalizerError.unusedStrings(totalUnusedKeys: searchResult.count)
