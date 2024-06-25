@@ -41,7 +41,7 @@ final class ProjectDataSourceTests: XCTestCase {
     
         print(projectTestPath)
         
-        sut = ProjectDataSourceImp(parameters: parameters, configuration: .default)
+        sut = ProjectDataSourceImp()
     }
     
     override func tearDown() {
@@ -52,7 +52,7 @@ final class ProjectDataSourceTests: XCTestCase {
     
     func testFetchLocalizableKeys() async {
         do {
-            let projectLocalizables = try await sut.fetchLocalizables()
+            let projectLocalizables = try await sut.fetchLocalizables([projectTestPath])
 
             XCTAssertTrue(projectLocalizables.count == 8)
             XCTAssertFalse(projectLocalizables.isEmpty)

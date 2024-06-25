@@ -40,7 +40,7 @@ final class LocalizableDataSourceTests: XCTestCase {
     
         print(projectTestPath)
         
-        sut = LocalizablesDataSourceImp(parameters: parameters, configuration: .default)
+        sut = LocalizablesDataSourceImp()
     }
     
     override func tearDown() {
@@ -51,7 +51,7 @@ final class LocalizableDataSourceTests: XCTestCase {
     
     func testCompareLocalizables() async {
         do {
-            try await sut.compare()
+            try await sut.compare(parameters)
         } catch let error {
             XCTFail(error.localizedDescription)
         }
