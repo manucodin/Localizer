@@ -8,5 +8,6 @@
 import Foundation
 
 protocol LocalizablesDataSource {
-    func compare() async throws
+    func compare(_ parameters: CompareParameters) async throws
+    func search(_ parameters: SearchParameters) async throws
 }

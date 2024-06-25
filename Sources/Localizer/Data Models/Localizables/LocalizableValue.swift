@@ -7,11 +7,11 @@
 
 import Foundation
 
-public struct LocalizableValue: Hashable {
-    public let key: String
-    public let value: String
+struct LocalizableValue: Hashable {
+    let key: String
+    let value: String
     
-    public init(key: String, value: String) {
+    init(key: String, value: String) {
         self.key = key
         self.value = value
     }

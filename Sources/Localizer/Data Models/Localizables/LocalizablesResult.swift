@@ -7,11 +7,11 @@
 
 import Foundation
 
-public struct LocalizablesResult {
-    public let languageCode: String
-    public let localizables: Set<LocalizableValue>
+struct LocalizablesResult {
+    let languageCode: String
+    let localizables: Set<LocalizableValue>
     
-    public init(languageCode: String, localizables: Set<LocalizableValue>) {
+    init(languageCode: String, localizables: Set<LocalizableValue>) {
         self.languageCode = languageCode
         self.localizables = localizables
     }

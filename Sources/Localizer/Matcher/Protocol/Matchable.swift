@@ -7,6 +7,7 @@
 
 import Foundation
 
-public protocol Matchable {
-    func match() async throws
+protocol Matchable {
+    func compare(_ parameters: CompareParameters) async throws
+    func search(_ parameters: SearchParameters) async throws
 }

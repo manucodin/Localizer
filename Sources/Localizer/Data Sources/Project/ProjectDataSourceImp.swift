@@ -7,20 +7,18 @@
 
 import Foundation
 
-internal class ProjectDataSourceImp: ProjectDataSource {
-    private let parameters: Parameters
-    private let configuration: Configuration
+class ProjectDataSourceImp: ProjectDataSource {
+    let configuration: Configuration
     
-    private let filesDataSource: FilesDataSource = FilesDataSourceImp()
+    let filesDataSource: FilesDataSource = FilesDataSourceImp()
     
-    internal init(parameters: Parameters, configuration: Configuration) {
-        self.parameters = parameters
+    init(configuration: Configuration = .default) {
         self.configuration = configuration
     }
     
-    func fetchLocalizables() async throws -> Set<String> {
+    func fetchLocalizables(_ searchPaths: [String]) async throws -> Set<String> {
         return try await withThrowingTaskGroup(of: Set<String>.self) { taskGroup in
-            self.parameters.searchPaths.forEach { searchablePath in
+            searchPaths.forEach { searchablePath in
                 taskGroup.addTask {
                     return try await self.fetchLocalizableKeys(
                         fromPath: searchablePath,
@@ -44,7 +42,7 @@ internal class ProjectDataSourceImp: ProjectDataSource {
         return try await searchKeys(whiteListPath, configuration.whitelistPattern)
     }
     
-    private func fetchLocalizableKeys(fromPath path: String, extensions: Set<String>, pattern: String) async throws -> Set<String> {
+    func fetchLocalizableKeys(fromPath path: String, extensions: Set<String>, pattern: String) async throws -> Set<String> {
         return try await withThrowingTaskGroup(of: Set<String>.self) { taskGroup in
             let files = try filesDataSource.fetchRecursiveFiles(fromPath: path, extensions: extensions)
             
@@ -63,7 +61,7 @@ internal class ProjectDataSourceImp: ProjectDataSource {
         }
     }
     
-    private func searchKeys(_ filePath: String, _ capturePattern: String) async throws -> Set<String> {
+    func searchKeys(_ filePath: String, _ capturePattern: String) async throws -> Set<String> {
         guard let fileContent = try? filesDataSource.fetchFileContent(fromPath: filePath) else {
             return Set<String>()
         }

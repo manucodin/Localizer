@@ -7,7 +7,7 @@
 
 import Foundation
 
-internal protocol ProjectDataSource {
-    func fetchLocalizables() async throws -> Set<String>
+protocol ProjectDataSource {
+    func fetchLocalizables(_ searchPaths: [String]) async throws -> Set<String>
     func fetchWhiteListKeys() async throws -> Set<String>
 }

@@ -7,13 +7,13 @@
 
 import Foundation
 
-public struct Configuration {
-    public let formatsSupported: Set<String>
-    public let capturePattern: String
-    public let localizablesPattern: String
-    public let whitelistPattern: String
+struct Configuration {
+    let formatsSupported: Set<String>
+    let capturePattern: String
+    let localizablesPattern: String
+    let whitelistPattern: String
     
-    public static var `default`: Configuration {
+    static var `default`: Configuration {
         return Configuration(
             formatsSupported: [.swift, .objC],
             capturePattern: #"\"([^"\\]*(?:\\.[^"\\]*)*)\".localized|NSLocalizedString\(\s*"([^"]+)"(?:\s*,|\s*comment:\s*"[^"]*"\s*\))"#,
@@ -22,7 +22,7 @@ public struct Configuration {
         )
     }
     
-    private init(formatsSupported: [FormatsSupported], capturePattern: String, localizablesPattern: String, whitelistPattern: String) {
+    init(formatsSupported: [FormatsSupported], capturePattern: String, localizablesPattern: String, whitelistPattern: String) {
         self.formatsSupported = Set<String>(formatsSupported.map{ $0.rawValue })
         self.capturePattern = capturePattern
         self.localizablesPattern = localizablesPattern

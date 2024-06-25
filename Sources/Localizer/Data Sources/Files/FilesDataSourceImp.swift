@@ -8,7 +8,7 @@
 import Foundation
 import Files
 
-internal class FilesDataSourceImp: FilesDataSource {
+class FilesDataSourceImp: FilesDataSource {
     var currentFolder: String {
         return Folder.current.path
     }
