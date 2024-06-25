@@ -8,7 +8,7 @@
 import Foundation
 import Files
 
-internal protocol FilesDataSource {
+protocol FilesDataSource {
     var currentFolder: String { get }
     func fetchFolders(fromPath path: String) throws -> Set<String>
     func fetchRecursiveFiles(fromPath path: String, extensions: Set<String>) throws -> Set<String>

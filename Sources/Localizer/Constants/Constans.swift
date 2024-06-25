@@ -7,4 +7,4 @@
 
 import Foundation
 
-public let LOCALIZABLE_FILE_EXTENSION = ".lproj"
+let LOCALIZABLE_FILE_EXTENSION = ".lproj"

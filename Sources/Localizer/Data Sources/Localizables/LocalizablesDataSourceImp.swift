@@ -9,31 +9,98 @@ import Foundation
 import Rainbow
 
 class LocalizablesDataSourceImp: LocalizablesDataSource {
-    private let parameters: Parameters
-    private let configuration: Configuration
+    let filesDataSource: FilesDataSource
+    let projectDataSource: ProjectDataSource
+    let configuration: Configuration
     
-    private let filesDataSource: FilesDataSource
-    private let projectDataSource: ProjectDataSource
-    
-    internal init(parameters: Parameters, configuration: Configuration) {
-        self.parameters = parameters
+    init(filesDataSource: FilesDataSource = FilesDataSourceImp(), projectDataSource: ProjectDataSource = ProjectDataSourceImp(), configuration: Configuration = .default) {
+        self.filesDataSource = filesDataSource
+        self.projectDataSource = projectDataSource
         self.configuration = configuration
-        self.filesDataSource = FilesDataSourceImp()
-        self.projectDataSource = ProjectDataSourceImp(parameters: parameters, configuration: configuration)
     }
     
-    func compare() async throws {
-        let languagesLocalizables = try await self.fetchLocalizables()
-        let projectLocalizables = try await self.projectDataSource.fetchLocalizables()
-        let whiteListKeys = try await self.projectDataSource.fetchWhiteListKeys()
+    func compare(_ parameters: CompareParameters) async throws {
+        try await makeCompare(parameters)
+    }
+    
+    func search(_ parameters: SearchParameters) async throws {
+        try await makeSearch(parameters)
+    }
+    
+    func makeCompare(_ parameters: CompareParameters) async throws {
+        var unlocalizableKeys = Set<String>()
         
-        try compare(projectLocalizables, languagesLocalizables, whiteListKeys)
+        let languagesLocalizables = try await fetchLangugeLocalizables(parameters)
+        let projectLocalizables = try await projectDataSource.fetchLocalizables(parameters.searchPaths)
+        let whiteListKeys = try await projectDataSource.fetchWhiteListKeys()
+        
+        projectLocalizables.forEach { projectLocalizable in
+            languagesLocalizables.forEach { languageLocalizable in
+                if isUnlocalized(key: projectLocalizable, languageLocalizables: languageLocalizable.localizables, whiteList: whiteListKeys) {
+                    unlocalizableKeys.insert(projectLocalizable)
+                    if parameters.verbose {
+                        print("Not found \"\(projectLocalizable)\" for '\(languageLocalizable.languageCode.uppercased())' language")
+                    }
+                }
+            }
+        }
+        
+        if !unlocalizableKeys.isEmpty {
+            if parameters.unlocalizedKeys {
+                let message = "\(unlocalizableKeys.joined(separator: "\n"))\nUnlocalized strings: \(unlocalizableKeys.count)"
+                throw LocalizerError.unlocalizedStringsWithMessage(message: message)
+            } else {
+                throw LocalizerError.unlocalizedStrings(totalUnlocalized: unlocalizableKeys.count)
+            }
+        }
     }
     
-    internal func fetchLocalizables() async throws -> [LocalizablesResult] {
-        let languagesPath = try await self.fetchLanguagesPaths()
+    func makeSearch(_ parameters: SearchParameters) async throws {
+        let flattedLocalizables = try await Set<String>(fetchLangugeLocalizables(parameters).flatMap({ $0.localizables.map({ $0.key} )}))
+        let projectLocalizables = try await projectDataSource.fetchLocalizables(parameters.searchPaths)
+        
+        let keys = parameters.unusedKeys ? getNotUsedKeys(projectLocalizables, flattedLocalizables) : getUsedKeys(projectLocalizables, flattedLocalizables)
+        
+        let searchResult = searchKey(parameters.key, keys: keys)
+        
+        if !searchResult.isEmpty {
+            if parameters.verbose {
+                let message = "\(searchResult.joined(separator: "\n"))\nResults: \(searchResult.count)"
+                throw LocalizerError.unusedStringsWithMessage(message: message)
+            } else {
+                throw LocalizerError.unusedStrings(totalUnusedKeys: searchResult.count)
+            }
+        }
+    }
+        
+    func getUsedKeys(_ projectLocalizables: Set<String>, _ localizables: Set<String>) -> Set<String> {
+        return localizables.union(projectLocalizables)
+    }
+    
+    func getNotUsedKeys(_ projectLocalizables: Set<String>, _ localizables: Set<String>) -> Set<String> {
+        return localizables.symmetricDifference(projectLocalizables)
+    }
+    
+    func searchKey(_ keyToSearch: String, keys: Set<String>) -> Set<String> {
+        guard !keyToSearch.isEmpty else { return keys }
+        
+        return keys.filter({ $0.elementsEqual(keyToSearch) })
+    }
+    
+    func fetchLangugeLocalizables(_ parameters: Parameters) async throws -> [LocalizablesResult] {
+        let languagePaths = try await fetchLanguagesPaths(parameters)
+        return try await fetchLocalizables(languagePaths)
+    }
+    
+    func fetchLanguagesPaths(_ parameters: Parameters) async throws -> Set<String> {
+        return try filesDataSource.fetchFolders(fromPath: parameters.localizableFilePath).filter{
+            $0.contains(LOCALIZABLE_FILE_EXTENSION)
+        }
+    }
+    
+    func fetchLocalizables(_ languagePaths: Set<String>) async throws -> [LocalizablesResult] {
         return try await withThrowingTaskGroup(of: LocalizablesResult.self) { taskGroup in
-            languagesPath.forEach { languagePath in
+            languagePaths.forEach { languagePath in
                 taskGroup.addTask {
                     return try await self.fetchLocalizableKeys(localizableFile: languagePath)
                 }
@@ -48,13 +115,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         }
     }
     
-    private func fetchLanguagesPaths() async throws -> Set<String> {
-        return try filesDataSource.fetchFolders(fromPath: parameters.localizableFilePath).filter{
-            $0.contains(LOCALIZABLE_FILE_EXTENSION)
-        }
-    }
-    
-    private func fetchLocalizableKeys(localizableFile filePath: String) async throws -> LocalizablesResult {
+    func fetchLocalizableKeys(localizableFile filePath: String) async throws -> LocalizablesResult {
         guard let languageCodeValue = URL(string: filePath)?.lastPathComponent.split(separator: ".").first else {
             throw NSError(domain: "test", code: 0)
         }
@@ -100,31 +161,7 @@ class LocalizablesDataSourceImp: LocalizablesDataSource {
         return LocalizablesResult(languageCode: languageCode, localizables: results)
     }
     
-    private func compare(_ projectLocalizables: Set<String>, _ languagesLocalizables: [LocalizablesResult], _ whiteListKeys: Set<String>) throws {
-        var unlocalizableKeys = Set<String>()
-        
-        projectLocalizables.forEach { projectLocalizable in
-            languagesLocalizables.forEach { languageLocalizable in
-                if isUnlocalized(key: projectLocalizable, languageLocalizables: languageLocalizable.localizables, whiteList: whiteListKeys) {
-                    unlocalizableKeys.insert(projectLocalizable)
-                    if parameters.verbose {
-                        print("Not found \"\(projectLocalizable)\" for '\(languageLocalizable.languageCode.uppercased())' language")
-                    }
-                }
-            }
-        }
-        
-        if !unlocalizableKeys.isEmpty {
-            if parameters.unlocalizedKeys {
-                let message = "\(unlocalizableKeys.joined(separator: "\n"))\nUnlocalized strings: \(unlocalizableKeys.count)"
-                throw LocalizerError.unlocalizedStringsWithMessage(message: message)
-            } else {
-                throw LocalizerError.unlocalizedStrings(totalUnlocalized: unlocalizableKeys.count)
-            }
-        }
-    }
-    
-    private func isUnlocalized(key: String, languageLocalizables: Set<LocalizableValue>, whiteList: Set<String>) -> Bool {
+    func isUnlocalized(key: String, languageLocalizables: Set<LocalizableValue>, whiteList: Set<String>) -> Bool {
         let notIgnoredKey = !whiteList.contains(key)
         let isUnlocalizedKey = !languageLocalizables.contains(where: { $0.key == key })
         
